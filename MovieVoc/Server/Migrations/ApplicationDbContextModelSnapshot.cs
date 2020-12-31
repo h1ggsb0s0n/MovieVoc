@@ -78,7 +78,7 @@ namespace MovieVoc.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genres");
+                    b.ToTable("Words");
                 });
 
             modelBuilder.Entity("MovieVoc.Shared.Entities.MoviesWords", b =>

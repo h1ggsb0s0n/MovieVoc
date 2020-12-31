@@ -27,7 +27,7 @@ namespace MovieVoc.Server
 
 
         public DbSet<Movie> Movies { get; set; }
-        public DbSet<Word> Genres { get; set; }
+        public DbSet<Word> Words { get; set; }
         public DbSet<MoviesWords> MoviesWords { get; set; }
 
     }

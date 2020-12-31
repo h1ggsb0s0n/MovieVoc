@@ -8,21 +8,6 @@ namespace MovieVoc.Server.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Genres",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    EnglischWord = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Translation = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DifficultyLevel = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Genres", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Movies",
                 columns: table => new
                 {
@@ -39,6 +24,21 @@ namespace MovieVoc.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Words",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EnglischWord = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Translation = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DifficultyLevel = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Words", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MoviesWords",
                 columns: table => new
                 {
@@ -49,15 +49,15 @@ namespace MovieVoc.Server.Migrations
                 {
                     table.PrimaryKey("PK_MoviesWords", x => new { x.MovieId, x.WordId });
                     table.ForeignKey(
-                        name: "FK_MoviesWords_Genres_WordId",
-                        column: x => x.WordId,
-                        principalTable: "Genres",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_MoviesWords_Movies_MovieId",
                         column: x => x.MovieId,
                         principalTable: "Movies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MoviesWords_Words_WordId",
+                        column: x => x.WordId,
+                        principalTable: "Words",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -74,10 +74,10 @@ namespace MovieVoc.Server.Migrations
                 name: "MoviesWords");
 
             migrationBuilder.DropTable(
-                name: "Genres");
+                name: "Movies");
 
             migrationBuilder.DropTable(
-                name: "Movies");
+                name: "Words");
         }
     }
 }

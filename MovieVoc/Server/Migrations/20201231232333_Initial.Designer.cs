@@ -10,7 +10,7 @@ using MovieVoc.Server;
 namespace MovieVoc.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201228214106_Initial")]
+    [Migration("20201231232333_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -80,7 +80,7 @@ namespace MovieVoc.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genres");
+                    b.ToTable("Words");
                 });
 
             modelBuilder.Entity("MovieVoc.Shared.Entities.MoviesWords", b =>
