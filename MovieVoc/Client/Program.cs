@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using MovieVoc.Client.Helpers;
+using MovieVoc.Client.Repository;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -17,7 +19,9 @@ namespace MovieVoc.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped<IHttpService, HttpService>();
+            builder.Services.AddScoped<MovieRepository>();
 
             await builder.Build().RunAsync();
         }

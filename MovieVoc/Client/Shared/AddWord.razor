@@ -1,0 +1,59 @@
+﻿
+<div>
+    <label>Wort:</label>
+    <div>
+        <input @bind="Word" />
+    </div>
+</div>
+<div>
+    <label>Uebersetzung</label>
+    <div>
+        <input type="text" @bind="Translation" />
+    </div>
+</div>
+<div>
+    <label>Schwierigkeits Level</label>
+    <div>
+        <input @bind="DifficultyLevel" />
+    </div>
+</div>
+
+<ul class="selectable-ul">
+    @foreach (var item in Movie.Vocabulary)
+    {
+        <li>@item.EnglischWord</li>
+    }
+</ul>
+
+<button class="btn btn-primary"  @onclick="addWordToMovie">Wort zufügen</button>
+
+
+
+@code {
+    [Parameter] public MovieDTO Movie { get; set; }
+    public string Word { get; set; }
+    public string Translation { get; set; }
+    public int DifficultyLevel { get; set; }
+
+
+    private void addWordToMovie()
+    {
+        Word newWord = new Word();
+        newWord.EnglischWord = this.Word;
+        newWord.Translation = this.Word;
+        newWord.DifficultyLevel = this.DifficultyLevel;
+
+        Movie.Vocabulary.Add(newWord);
+
+        this.Word = "";
+        this.Translation = "";
+        this.DifficultyLevel = 0;
+        StateHasChanged();
+
+    }
+
+
+
+
+
+}
