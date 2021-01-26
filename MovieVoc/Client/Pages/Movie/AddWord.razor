@@ -1,4 +1,9 @@
-﻿
+﻿@page "/movies/addvocabulary"
+@inject NavigationManager navigationManager
+@inject MovieRepository movieRepository
+
+<h3>Add Vocabulary</h3>
+
 <div>
     <label>Wort:</label>
     <div>
@@ -19,18 +24,18 @@
 </div>
 
 <ul class="selectable-ul">
-    @foreach (var item in Movie.Vocabulary)
+    @foreach (var item in vocabulary.Vocabulary)
     {
         <li>@item.EnglischWord</li>
     }
 </ul>
 
-<button class="btn btn-primary"  @onclick="addWordToMovie">Wort zufügen</button>
+<button class="btn btn-primary" @onclick="addWordToMovie">Wort zufügen</button>
 
 
 
 @code {
-    [Parameter] public MovieDTO Movie { get; set; }
+    public MovieWordsDTO vocabulary = new MovieWordsDTO();
     public string Word { get; set; }
     public string Translation { get; set; }
     public int DifficultyLevel { get; set; }
@@ -43,7 +48,7 @@
         newWord.Translation = this.Word;
         newWord.DifficultyLevel = this.DifficultyLevel;
 
-        Movie.Vocabulary.Add(newWord);
+        vocabulary.Vocabulary.Add(newWord);
 
         this.Word = "";
         this.Translation = "";
