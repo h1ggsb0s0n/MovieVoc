@@ -30,6 +30,8 @@ namespace MovieVoc.Client.Helpers
 
         public async Task<HttpResponseWrapper<TResponse>> Post<T, TResponse>(string url, T data)
         {
+
+           
             var dataJson = JsonSerializer.Serialize(data);
             var stringContent = new StringContent(dataJson, Encoding.UTF8, "application/json");
             var response = await httpClient.PostAsync(url, stringContent);
@@ -49,6 +51,11 @@ namespace MovieVoc.Client.Helpers
         {
             var responseString = await httpResponse.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<T>(responseString, options);
+        }
+
+        public Task<HttpResponseWrapper<T>> Get<T>(string url)
+        {
+            throw new NotImplementedException();
         }
     }
 }

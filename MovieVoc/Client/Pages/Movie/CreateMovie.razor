@@ -1,39 +1,40 @@
-﻿@page "/movies/create"
+﻿@page "/movie/create"
 @inject NavigationManager navigationManager
 @inject MovieRepository movieRepository
 
 <h3>CreateMovie</h3>
 
-<EditForm Model="movie" OnValidSubmit="saveMovie">
+<EditForm Model="Movie" OnValidSubmit="saveMovie">
     <DataAnnotationsValidator />
     <div class="form-group">
         <label>Titel:</label>
         <div>
-            <InputText class="form-control" @bind-Value="@movie.Title" />
-            <ValidationMessage For="@(() => movie.Title)" />
+            <InputText class="form-control" @bind-Value="@Movie.Title" />
+            <ValidationMessage For="@(() => Movie.Title)" />
         </div>
     </div>
 
     <div>
         <label>Zusammenfassung:</label>
-        <textarea class="form-control" @bind ="movie.Summary" rows="4" cols="50"></textarea>
+        <textarea class="form-control" @bind ="Movie.Summary" rows="4" cols="50"></textarea>
 
-        <ValidationMessage For="@(() => movie.Summary)" />
+        <ValidationMessage For="@(() => Movie.Summary)" />
 
     </div>
 
     <div class="form-group">
-        <label>Release Date:</label>
+        <label>Veröffentlichungsdatum:</label>
         <div>
-            <InputDate type ="date" class="form-control"  @bind-Value="@movie.ReleaseDate" />
-            <ValidationMessage For="@(() => movie.Poster)" />
+            <InputDate type ="date" class="form-control"  @bind-Value="@Movie.ReleaseDate" />
+            <ValidationMessage For="@(() => Movie.Poster)" />
+            <ValidationMessage For="@(() => Movie.Poster)" />
         </div>
     </div>
     <div class="form-group">
         <label>Poster:</label>
         <div>
-            <InputText class="form-control" @bind-Value="@movie.Poster" />
-            <ValidationMessage For="@(() => movie.Poster)" />
+            <InputText class="form-control" @bind-Value="@Movie.Poster" />
+            <ValidationMessage For="@(() => Movie.Poster)" />
         </div>
     </div>
 
@@ -42,7 +43,7 @@
 
 @code {
 
-    private MovieDTO movie = new MovieDTO();
+    private MovieDTO Movie = new MovieDTO();
     
     
 
@@ -51,8 +52,9 @@
         
         try
         {
-            //var movieId = await movieRepository.CreateMovie(movie);
-            Console.WriteLine(movie);
+            Console.WriteLine("Save Movie" + Movie.Title);
+            var movieId = await movieRepository.CreateMovie(Movie);
+            Console.WriteLine(Movie);
 
         }
         catch (Exception ex)

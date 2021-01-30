@@ -20,6 +20,7 @@ namespace MovieVoc.Client.Repository
 
         public async Task<int> CreateMovie(MovieDTO movie)
         {
+            Console.WriteLine("send stuff");
             var response = await httpService.Post<MovieDTO, int>(url, movie);
             if (!response.Success)
             {

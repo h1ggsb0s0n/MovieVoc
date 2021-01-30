@@ -13,7 +13,7 @@
 
 
 <ul class="selectable-ul">
-    @foreach (var word in vocabulary.ListOfWords)
+    @foreach (var word in words)
     {
         <li>@word.EnglischWord</li>
     }
@@ -33,9 +33,9 @@
 
     private void SelectedWord(Word word)
     {
-        if (!vocabulary.ListOfWords.Any(x => x.Equals(word)))
+        if (!words.Any(x => x.Equals(word)))
         {
-            vocabulary.ListOfWords.Add(word);
+            words.Add(word);
         }
     }
 }

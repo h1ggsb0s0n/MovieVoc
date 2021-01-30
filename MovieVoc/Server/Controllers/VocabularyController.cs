@@ -12,38 +12,22 @@ namespace MovieVoc.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class MovieController: ControllerBase
+    public class VocabularyController : ControllerBase
     {
         private readonly ApplicationDbContext db;
-        private readonly IMapper mapper;
 
-        public MovieController(ApplicationDbContext db, IMapper mapper)
+        public VocabularyController(ApplicationDbContext db)
         {
             this.db = db;
-            this.mapper = mapper;
         }
 
 
         [HttpPost]
-        [AllowAnonymous]
-        public async Task<ActionResult<int>> Post(MovieDTO movieDto)
+        public async Task<ActionResult<int>> Post(VocabularyDTO voc)
         {
-            Movie movieForDB = new Movie();
-            movieForDB = mapper.Map(movieDto, movieForDB);
-            db.Add(movieForDB);
-            await db.SaveChangesAsync();
-            return movieForDB.Id;
-        }
+            Movie movie = db.Movies.First(mv => mv.Id == voc.MovieId);
 
-        /*
-        [HttpPost]
-        public async Task<ActionResult<int>> Post(VocabularyDTO wordsDTO)
-        {
-            Movie movie = db.Movies.First(mv => mv.Id == wordsDTO.MovieId);
-
-        
-
-            foreach (Word word in wordsDTO.ListOfWords)
+            foreach (Word word in voc.ListOfWords)
             {
 
                 //todo: check if word already exists
@@ -64,9 +48,16 @@ namespace MovieVoc.Server.Controllers
             await db.SaveChangesAsync();
             return movie.Id;
 
-        }*/
+        }
 
 
+        [HttpGet("{id}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<MovieVocabularyDTO>> Get(int id)
+        {
+            throw new NotImplementedException();
+
+        }
 
     }
 }
