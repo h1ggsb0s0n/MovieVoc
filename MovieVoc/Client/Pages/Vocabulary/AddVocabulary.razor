@@ -1,6 +1,7 @@
 ﻿@page "/movies/addvocabulary"
 @inject NavigationManager navigationManager
 @inject MovieRepository movieRepository
+@using MovieVoc.Client.Pages.Word
 
 <h3>Add Vocabulary</h3>
 
@@ -27,15 +28,12 @@
 
 
 
-
-
 <button class="btn btn-primary" @onclick="addWordToVoc">Wort zufügen</button>
 <button class="btn btn-primary" @onclick="addVocToMovie">Vockabeln dem Film zufügen</button>
 
 
 
 @code {
-    public MovieWordsDTO movieWords = new MovieWordsDTO();
     public string Word { get; set; }
     public string Translation { get; set; }
     public int DifficultyLevel { get; set; }
@@ -48,7 +46,7 @@
         newWord.Translation = this.Word;
         newWord.DifficultyLevel = this.DifficultyLevel;
 
-        movieWords.Vocabulary.Add(newWord);
+        //movieWords.Vocabulary.Add(newWord);
 
         this.Word = "";
         this.Translation = "";

@@ -1,8 +1,7 @@
-﻿@typeparam T
-@inject VocabularyRepository vocRepo
+﻿@inject WordRepository wordRepo
 
 <CustomTypeahead SearchMethod="@((string searchText) => SearchForWords(searchText))"
-                 ValueChanged="@((Word word) => SelectedWord(word))" Context="word">
+                 ValueChanged="@((WordDTO word) => SelectedWord(word))" Context="word">
     <ResultTemplate>
         @word.EnglischWord/ @word.Translation;
     </ResultTemplate>
@@ -12,7 +11,7 @@
 
 
 <ul class="selectable-ul">
-    @foreach (var word in vocabulary.ListOfWords)
+    @foreach (var word in Words)
     {
         <li>@word.EnglischWord</li>
     }
@@ -21,20 +20,20 @@
 
 @code {
 
-    [Parameter] public VocabularyDTO vocabulary { get; set; }
+    [Parameter] public List<WordDTO> Words { get; set; }
 
 
-    private async Task<IEnumerable<Word>> SearchForWords(string searchText)
+    private async Task<IEnumerable<WordDTO>> SearchForWords(string searchText)
     {
-        return await vocRepo.GetWordSuggestions(searchText);
+        return await wordRepo.GetWordSuggestions(searchText);
     }
 
 
-    private void SelectedWord(Word word)
+    private void SelectedWord(WordDTO word)
     {
-        if (!vocabulary.ListOfWords.Any(x => x.Equals(word)))
+        if (!Words.Any(x => x.Equals(word)))
         {
-            vocabulary.ListOfWords.Add(word);
+            Words.Add(word);
         }
     }
 }

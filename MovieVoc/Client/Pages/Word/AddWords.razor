@@ -2,7 +2,7 @@
 @inject NavigationManager navigationManager
 @inject MovieRepository movieRepository
 
-<h3>Add Words</h3>
+<h3>Add Words to Database</h3>
 
 <div>
     <label>Wort:</label>
@@ -23,32 +23,27 @@
     </div>
 </div>
 
+<AddWordsTypeahead Words="words"></AddWordsTypeahead>
 
-
-
-
-
-
-<button class="btn btn-primary" @onclick="addWordToVoc">Wort zufügen</button>
-<button class="btn btn-primary" @onclick="addVocToMovie">Vockabeln dem Film zufügen</button>
+<button class="btn btn-primary" @onclick="addWordsToDatabase">Wörter der Datenbank zufügen</button>
 
 
 
 @code {
-    public MovieWordsDTO movieWords = new MovieWordsDTO();
     public string Word { get; set; }
     public string Translation { get; set; }
     public int DifficultyLevel { get; set; }
 
+    List<WordDTO> words = new List<WordDTO>();
 
     private void addWordToVoc()
     {
-        Word newWord = new Word();
+        WordDTO newWord = new WordDTO();
         newWord.EnglischWord = this.Word;
         newWord.Translation = this.Word;
         newWord.DifficultyLevel = this.DifficultyLevel;
 
-        movieWords.Vocabulary.Add(newWord);
+        words.Add(newWord);
 
         this.Word = "";
         this.Translation = "";
@@ -57,14 +52,10 @@
 
     }
 
-    private void addVocToMovie()
+    private void addWordsToDatabase()
     {
 
 
     }
-
-
-
-
 
 }

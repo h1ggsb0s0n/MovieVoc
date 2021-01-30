@@ -30,9 +30,9 @@ namespace MovieVoc.Client.Repository
             return response.Response;
         }
 
-        public async Task<List<Word>> GetWordSuggestions(string name)
+        public async Task<List<WordDTO>> GetWordSuggestions(string name)
         {
-            var response = await httpService.Get<List<Word>>($"{url}/search/{name}");
+            var response = await httpService.Get<List<WordDTO>>($"{url}/search/{name}");
             if (!response.Success)
             {
                 throw new ApplicationException(await response.GetBody());
