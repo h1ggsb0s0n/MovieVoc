@@ -23,37 +23,45 @@
     </div>
 </div>
 
-<ul class="selectable-ul">
-    @foreach (var item in vocabulary.Vocabulary)
-    {
-        <li>@item.EnglischWord</li>
-    }
-</ul>
+<SelectWordTypeahead vocabulary="vocabulary.Vocabulary"></SelectWordTypeahead>
 
-<button class="btn btn-primary" @onclick="addWordToMovie">Wort zufügen</button>
+
+
+
+
+
+
+<button class="btn btn-primary" @onclick="addWordToVoc">Wort zufügen</button>
+<button class="btn btn-primary" @onclick="addVocToMovie">Vockabeln dem Film zufügen</button>
 
 
 
 @code {
-    public MovieWordsDTO vocabulary = new MovieWordsDTO();
+    public MovieWordsDTO movieWords = new MovieWordsDTO();
     public string Word { get; set; }
     public string Translation { get; set; }
     public int DifficultyLevel { get; set; }
 
 
-    private void addWordToMovie()
+    private void addWordToVoc()
     {
         Word newWord = new Word();
         newWord.EnglischWord = this.Word;
         newWord.Translation = this.Word;
         newWord.DifficultyLevel = this.DifficultyLevel;
 
-        vocabulary.Vocabulary.Add(newWord);
+        movieWords.Vocabulary.Add(newWord);
 
         this.Word = "";
         this.Translation = "";
         this.DifficultyLevel = 0;
         StateHasChanged();
+
+    }
+
+    private void addVocToMovie()
+    {
+
 
     }
 

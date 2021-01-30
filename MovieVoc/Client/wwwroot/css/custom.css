@@ -21,3 +21,33 @@
         .selectable-ul li:hover {
             background-color: #08c;
         }
+
+
+
+
+.typeahead__controls {
+    position: relative;
+    cursor: text;
+    display: flex;
+}
+
+
+.typeahead__input {
+    width: 100%;
+    border: 1px solid #bfbfbf;
+    padding: .5rem;
+}
+
+
+.blazored-typeahead__results {
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    padding-top: .5rem;
+    min-height: 2rem;
+    max-height: 30rem;
+    overflow-y: auto;
+}
+
+.blazored-typeahead__result,
+.blazored-typeahead__notfound {
+    padding: .5rem;
+}

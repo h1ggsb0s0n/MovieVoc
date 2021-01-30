@@ -1,0 +1,41 @@
+﻿@typeparam T
+@inject VocabularyRepository vocRepo
+
+
+<CustomTypeahead SearchMethod="@((string searchText) => SearchForWords(searchText))"
+                 ValueChanged="@((Word word) => SelectedWord(word))" Context="word">
+    <ResultTemplate>
+        @word.EnglischWord/ @word.Translation;
+    </ResultTemplate>
+
+</CustomTypeahead>
+
+
+
+<ul class="selectable-ul">
+    @foreach (var word in vocabulary.ListOfWords)
+    {
+        <li>@word.EnglischWord</li>
+    }
+</ul>
+
+
+@code {
+
+    [Parameter] public List<Word> words { get; set; }
+
+
+    private async Task<IEnumerable<Word>> SearchForWords(string searchText)
+    {
+        return await vocRepo.GetWordSuggestions(searchText);
+    }
+
+
+    private void SelectedWord(Word word)
+    {
+        if (!vocabulary.ListOfWords.Any(x => x.Equals(word)))
+        {
+            vocabulary.ListOfWords.Add(word);
+        }
+    }
+}

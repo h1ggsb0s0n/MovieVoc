@@ -35,7 +35,7 @@ namespace MovieVoc.Server.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<int>> Post(WordsDTO wordsDTO)
+        public async Task<ActionResult<int>> Post(VocabularyDTO wordsDTO)
         {
             Movie movie = db.Movies.First(mv => mv.Id == wordsDTO.MovieId);
 

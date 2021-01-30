@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace MovieVoc.Shared.DTOs
 {
-    public class WordsDTO
+    public class WordSuggestionDTO
     {
-        public int MovieId { get; set; }
         public List<Word> ListOfWords { get; set; }
-
     }
 }
