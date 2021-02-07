@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MovieVoc.Shared.DTOs;
 using MovieVoc.Shared.Entities;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace MovieVoc.Server.Controllers
 {
@@ -16,9 +17,10 @@ namespace MovieVoc.Server.Controllers
         private readonly ApplicationDbContext db;
         private readonly IMapper mapper;
 
-        public WordController(ApplicationDbContext db)
+        public WordController(ApplicationDbContext db, IMapper mapper)
         {
             this.db = db;
+            this.mapper = mapper;
         }
 
 
@@ -37,6 +39,28 @@ namespace MovieVoc.Server.Controllers
             //return word.Id;
             return 1;
 
+        }
+
+
+        [HttpGet("search/{searchText}")]
+        public async Task<ActionResult<List<WordDTO>>> SearchWordInDB(string searchText)
+        {
+            List<WordDTO> reval = new List<WordDTO>();
+            if (!string.IsNullOrWhiteSpace(searchText))
+            {
+
+                List<Word> dbResult = await db.Words.Where(x => x.EnglischWord.Contains(searchText))
+                    .Take(5)
+                    .ToListAsync();
+
+                foreach (Word word in dbResult)
+                {
+                    WordDTO wordDTO = new WordDTO();
+                    reval.Add(mapper.Map(word, wordDTO));
+                }
+            }
+
+            return reval;
         }
 
 

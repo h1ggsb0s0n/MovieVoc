@@ -53,9 +53,19 @@ namespace MovieVoc.Client.Helpers
             return JsonSerializer.Deserialize<T>(responseString, options);
         }
 
-        public Task<HttpResponseWrapper<T>> Get<T>(string url)
+        public async Task<HttpResponseWrapper<T>> Get<T>(string url)
         {
-            throw new NotImplementedException();
+            var responseHTTP = await httpClient.GetAsync(url);
+
+            if (responseHTTP.IsSuccessStatusCode)
+            {
+                var response = await Deserialize<T>(responseHTTP, defaultJsonSerializerOptions);
+                return new HttpResponseWrapper<T>(response, true, responseHTTP);
+            }
+            else
+            {
+                return new HttpResponseWrapper<T>(default, false, responseHTTP);
+            }
         }
     }
 }
