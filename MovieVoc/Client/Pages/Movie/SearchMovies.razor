@@ -1,0 +1,41 @@
+﻿@page "/movie/search"
+@inject NavigationManager navigationManager
+@inject MovieRepository movieRepository
+
+
+<h3>Suche Filme:</h3>
+
+<SearchMoviesTypeahead @bind-SelectedMovie="MovieTobeFound"></SearchMoviesTypeahead>
+
+<button class="btn btn-primary" @onclick="getSelectedMovie">Suche den Film</button>
+
+@if (SelectedMovie != null)
+{
+   <h3>@SelectedMovie.Title</h3>
+   <p>@SelectedMovie.Summary</p>
+
+}
+
+@code {
+
+    private MovieDTO MovieTobeFound = new MovieDTO();
+
+    public MovieDTO SelectedMovie { get; set; }
+
+
+
+    private void printSelectedMovie()
+    {
+        Console.WriteLine("PrintSelected movie:");
+        Console.WriteLine(this.MovieTobeFound);
+        Console.WriteLine(this.MovieTobeFound.Title);
+    }
+
+
+    private async void getSelectedMovie()
+    {
+        this.SelectedMovie = await movieRepository.GetMovie(this.MovieTobeFound.Id);
+    }
+
+
+}

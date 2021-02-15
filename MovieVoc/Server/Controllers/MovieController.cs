@@ -7,6 +7,7 @@ using MovieVoc.Shared.DTOs;
 using MovieVoc.Shared.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace MovieVoc.Server.Controllers
 {
@@ -33,6 +34,39 @@ namespace MovieVoc.Server.Controllers
             db.Add(movieForDB);
             await db.SaveChangesAsync();
             return movieForDB.Id;
+        }
+
+
+        [HttpGet("movie/{id}")]
+        public async Task<ActionResult<Movie>> GetMovieInDb(int id)
+        {
+            Movie movie = await db.Movies.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (movie == null) { return NotFound(); }
+
+            return movie;
+        }
+
+
+        [HttpGet("search/{searchText}")]
+        public async Task<ActionResult<List<MovieDTO>>> SearchMovieInDB(string searchText)
+        {
+            List<MovieDTO> reval = new List<MovieDTO>();
+            if (!string.IsNullOrWhiteSpace(searchText))
+            {
+
+                List<Movie> dbResult = await db.Movies.Where(x => x.Title.Contains(searchText))
+                    .Take(5)
+                    .ToListAsync();
+
+                foreach (Movie movie in dbResult)
+                {
+                    MovieDTO movieDTO = new MovieDTO();
+                    reval.Add(mapper.Map(movie, movieDTO));
+                }
+            }
+
+            return reval;
         }
 
         /*

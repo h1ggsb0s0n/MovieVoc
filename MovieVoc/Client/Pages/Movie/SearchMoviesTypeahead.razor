@@ -1,0 +1,30 @@
+﻿@inject MovieRepository movieRepo
+
+<CustomTypeahead SearchMethod="@((string searchText) => SearchForMovies(searchText))"
+                 ValueChanged="@((MovieDTO movie) => SelectMovie(movie))" Context="movie">
+    <ResultTemplate>
+        @movie.TitleBrief
+    </ResultTemplate>
+
+</CustomTypeahead>
+
+
+@code {
+
+    [Parameter] public MovieDTO SelectedMovie { get; set; }
+    [Parameter] public EventCallback<MovieDTO> SelectedMovieChanged { get; set; }
+
+
+    private async Task<IEnumerable<MovieDTO>> SearchForMovies(string searchText)
+    {
+        return await movieRepo.GetMovieSuggestions(searchText);
+    }
+
+
+    private async void SelectMovie(MovieDTO movie)
+    {
+        this.SelectedMovie = movie;
+        await SelectedMovieChanged.InvokeAsync(movie);
+    }
+
+}

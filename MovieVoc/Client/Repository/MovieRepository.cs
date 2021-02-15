@@ -31,7 +31,30 @@ namespace MovieVoc.Client.Repository
         }
 
 
-        
+        public async Task<MovieDTO> GetMovie(int id)
+        {
+            var response = await httpService.Get<MovieDTO>($"{url}/movie/{id}");
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+
+            return response.Response;
+        }
+
+
+        public async Task<List<MovieDTO>> GetMovieSuggestions(string movieName)
+        {
+            var response = await httpService.Get<List<MovieDTO>>($"{url}/search/{movieName}");
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+            return response.Response;
+        }
+
+
+
 
     }
 }

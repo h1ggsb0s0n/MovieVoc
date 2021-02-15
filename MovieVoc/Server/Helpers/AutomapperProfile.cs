@@ -16,6 +16,7 @@ namespace MovieVoc.Server.Helpers
         public AutomapperProfile()
         {
             CreateMap<MovieDTO, Movie>();
+            CreateMap<Movie, MovieDTO>();
             CreateMap<Word, WordDTO>();
         }
 
