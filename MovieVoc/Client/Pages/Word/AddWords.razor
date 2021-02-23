@@ -1,8 +1,8 @@
-﻿@page "/word/createWords"
+﻿@page "/word/addwords"
 @inject NavigationManager navigationManager
 @inject MovieRepository movieRepository
 
-<h3>Add Words to Database</h3>
+<h3>Wörter der Datenbank zufügen</h3>
 
 <div>
     <label>Wort:</label>
@@ -23,9 +23,11 @@
     </div>
 </div>
 
-<AddWordsTypeahead Words="words"></AddWordsTypeahead>
+<button class="btn btn-primary" @onclick="addWordsToList">Wort zufügen</button>
 
-<button class="btn btn-primary" @onclick="addWordsToDatabase">Wörter der Datenbank zufügen</button>
+<WordSelector SelectedWords="words"></WordSelector>
+
+<button class="btn btn-primary" @onclick="addWordsToDatabase">Alle Selektierten Wörter der Datenbank zufügen</button>
 
 
 
@@ -36,7 +38,7 @@
 
     List<WordDTO> words = new List<WordDTO>();
 
-    private void addWordToVoc()
+    private void addWordsToList()
     {
         WordDTO newWord = new WordDTO();
         newWord.EnglischWord = this.Word;

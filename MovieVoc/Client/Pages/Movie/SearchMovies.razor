@@ -5,15 +5,15 @@
 
 <h3>Suche Filme:</h3>
 
-<SearchMoviesTypeahead @bind-SelectedMovie="MovieTobeFound"></SearchMoviesTypeahead>
+<SearchMoviesTypeahead @bind-SelectedMovie="MovieTobeFound" getMovie="getSelectedMovie"></SearchMoviesTypeahead>
 
-<button class="btn btn-primary" @onclick="getSelectedMovie">Suche den Film</button>
+
 
 @if (SelectedMovie != null)
 {
-   <h3>@SelectedMovie.Title</h3>
-   <p>@SelectedMovie.Summary</p>
-
+    <h3>@SelectedMovie.Title</h3>
+    <p>@SelectedMovie.Summary</p>
+    <button class="btn btn-primary" @onclick="goToLearningPage">Vokabular von diesem Film lernen!</button>
 }
 
 @code {
@@ -35,6 +35,12 @@
     private async void getSelectedMovie()
     {
         this.SelectedMovie = await movieRepository.GetMovie(this.MovieTobeFound.Id);
+        StateHasChanged();
+    }
+
+    private void goToLearningPage()
+    {
+        navigationManager.NavigateTo("vocabulary/"+MovieTobeFound.Id);
     }
 
 

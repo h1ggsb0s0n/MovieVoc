@@ -1,21 +1,17 @@
-﻿@page "/movies/addvocabulary"
+﻿@page "/vocabulary/Add"
 @inject NavigationManager navigationManager
 @inject MovieRepository movieRepository
 @using MovieVoc.Client.Pages.Word
 
-<h3>Add Vocabulary</h3>
+<h3>Wörter einem Film zufügen hinzufügen:</h3>
 
 <div>
-    <label>Wort:</label>
-    <div>
-        <input @bind="Word" />
-    </div>
+    <label>Film suchen:</label>
+
 </div>
 <div>
-    <label>Uebersetzung</label>
-    <div>
-        <input type="text" @bind="Translation" />
-    </div>
+    <label>Wort suchen</label>
+
 </div>
 <div>
     <label>Schwierigkeits Level</label>

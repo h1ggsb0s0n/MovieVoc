@@ -1,0 +1,50 @@
+﻿<div class="word-selector">
+    <ul class="word-selectable-ul">
+        @foreach (var item in SelectedWords)
+        {
+            <li @onclick="@(() => Deselect(item))">@item.EnglischWord</li>
+        }
+    </ul>
+    <div class="word-selector-buttons">
+        <button type="button" @onclick="SelectAll">Alle Entfernen</button>
+        <button type="button" @onclick="DeselectAll">Alle Hinzufügen</button>
+    </div>
+    <ul class="word-selectable-ul">
+        @foreach (var word in NotSelectedWords)
+        {
+            <li @onclick="@(() => Select(word))">@word.EnglischWord</li>
+        }
+    </ul>
+</div>
+
+@code {
+
+    [Parameter]
+    public List<WordDTO> SelectedWords { get; set; } = new List<WordDTO>();
+
+    public List<WordDTO> NotSelectedWords { get; set; } = new List<WordDTO>();
+
+    private void Select(WordDTO item)
+    {
+        NotSelectedWords.Remove(item);
+        SelectedWords.Add(item);
+    }
+
+    private void Deselect(WordDTO item)
+    {
+        SelectedWords.Remove(item);
+        NotSelectedWords.Add(item);
+    }
+
+    private void SelectAll()
+    {
+        SelectedWords.AddRange(NotSelectedWords);
+        NotSelectedWords.Clear();
+    }
+
+    private void DeselectAll()
+    {
+        NotSelectedWords.AddRange(SelectedWords);
+        SelectedWords.Clear();
+    }
+}
