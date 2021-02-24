@@ -22,8 +22,6 @@
 
     private async void SelectMovie(MovieDTO movie)
     {
-        //this.SelectedMovie = movie;
-        //await SelectedMovieChanged.InvokeAsync(movie);
         await getMovie.InvokeAsync(movie.Id);
     }
 

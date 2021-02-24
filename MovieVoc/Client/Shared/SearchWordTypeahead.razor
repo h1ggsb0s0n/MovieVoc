@@ -1,0 +1,32 @@
+﻿@inject VocabularyRepository vocRepo
+
+<CustomTypeahead SearchMethod="@((string searchText) => SearchForWords(searchText))"
+                 ValueChanged="@((WordDTO word) => SelectedWord(word))" Context="word">
+    <ResultTemplate>
+        @word.EnglischWord - @word.Translation;
+    </ResultTemplate>
+
+</CustomTypeahead>
+
+
+@code {
+
+    [Parameter] public List<WordDTO> words { get; set; }
+
+
+    private async Task<IEnumerable<WordDTO>> SearchForWords(string searchText)
+    {
+        return await vocRepo.GetWordSuggestions(searchText);
+    }
+
+
+    private void SelectedWord(WordDTO word)
+    {
+        if (!words.Any(x => x.Equals(word)))
+        {
+            words.Add(word);
+        }
+
+        StateHasChanged();
+    }
+}

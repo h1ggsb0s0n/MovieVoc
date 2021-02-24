@@ -23,6 +23,7 @@ namespace MovieVoc.Client
             builder.Services.AddScoped<IHttpService, HttpService>();
             builder.Services.AddScoped<MovieRepository>();
             builder.Services.AddScoped<WordRepository>();
+            builder.Services.AddScoped<VocabularyRepository>();
             await builder.Build().RunAsync();
         }
     }

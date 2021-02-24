@@ -1,55 +1,57 @@
-﻿@page "/vocabulary/Add"
+﻿@page "/vocabulary/add"
 @inject NavigationManager navigationManager
 @inject MovieRepository movieRepository
 @using MovieVoc.Client.Pages.Word
 @using MovieVoc.Client.Pages.Movie
 
 <h3>Wörter einem Film zufügen hinzufügen:</h3>
- <SearchMoviesTypeahead @bind-SelectedMovie="MovieTobeFound" getMovie="getSelectedMovie"></SearchMoviesTypeahead>
 <div>
     <label>Film suchen:</label>
+    <SearchMoviesTypeahead getMovie="getSelectedMovie"></SearchMoviesTypeahead>
+
+    @if (SelectedMovie != null)
+    {
+        <h3>@SelectedMovie.Title</h3>
+        <p>@SelectedMovie.Summary</p>
+    }
 </div>
 <div>
     <label>Wort suchen:</label>
-
+    <SearchWordTypeahead words="SeletedWords"></SearchWordTypeahead>
+    <WordSelector SelectedWords="SeletedWords"></WordSelector>
 </div>
+<button class="btn btn-primary" @onclick="addWordsToMovie">Alle Selektierten Wörter der Datenbank zufügen</button>
+<button class="btn btn-primary" @onclick="updateState">updateState</button>
 
 
 
 @code {
 
-    private MovieDTO MovieTobeFound = new MovieDTO();
-
     public MovieDTO SelectedMovie { get; set; }
 
+    public List<WordDTO> SeletedWords { get; set; } = new List<WordDTO>();
 
 
-    private async void getSelectedMovie()
+
+    private async void getSelectedMovie(int id)
     {
-        this.SelectedMovie = await movieRepository.GetMovie(this.MovieTobeFound.Id);
-
-    }
-
-
-
-
-
-    private void addWordToVoc()
-    {
-        Word newWord = new Word();
-
+        this.SelectedMovie = await movieRepository.GetMovie(id);
         StateHasChanged();
-
     }
 
-    private void addVocToMovie()
+    private void addWordsToMovie()
     {
-
+        foreach(WordDTO word in SeletedWords)
+        {
+            Console.WriteLine(word);
+        }
 
     }
 
-
-
+    private void updateState()
+    {
+        StateHasChanged();
+    }
 
 
 }
