@@ -5,7 +5,7 @@
 
 <h3>Suche Filme:</h3>
 
-<SearchMoviesTypeahead @bind-SelectedMovie="MovieTobeFound" getMovie="getSelectedMovie"></SearchMoviesTypeahead>
+<SearchMoviesTypeahead getMovie="getSelectedMovie"></SearchMoviesTypeahead>
 
 
 
@@ -18,29 +18,18 @@
 
 @code {
 
-    private MovieDTO MovieTobeFound = new MovieDTO();
-
     public MovieDTO SelectedMovie { get; set; }
 
 
-
-    private void printSelectedMovie()
+    private async void getSelectedMovie(int id)
     {
-        Console.WriteLine("PrintSelected movie:");
-        Console.WriteLine(this.MovieTobeFound);
-        Console.WriteLine(this.MovieTobeFound.Title);
-    }
-
-
-    private async void getSelectedMovie()
-    {
-        this.SelectedMovie = await movieRepository.GetMovie(this.MovieTobeFound.Id);
+        this.SelectedMovie = await movieRepository.GetMovie(id);
         StateHasChanged();
     }
 
     private void goToLearningPage()
     {
-        navigationManager.NavigateTo("vocabulary/"+MovieTobeFound.Id);
+        navigationManager.NavigateTo("vocabulary/" + SelectedMovie.Id);
     }
 
 

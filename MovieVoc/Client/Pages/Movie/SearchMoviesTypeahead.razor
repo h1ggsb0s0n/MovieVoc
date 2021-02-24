@@ -11,9 +11,7 @@
 
 @code {
 
-    [Parameter] public MovieDTO SelectedMovie { get; set; }
-    [Parameter] public EventCallback<MovieDTO> SelectedMovieChanged { get; set; }
-    [Parameter] public EventCallback getMovie { get; set; }
+    [Parameter] public EventCallback<int> getMovie { get; set; }
 
 
     private async Task<IEnumerable<MovieDTO>> SearchForMovies(string searchText)
@@ -24,9 +22,9 @@
 
     private async void SelectMovie(MovieDTO movie)
     {
-        this.SelectedMovie = movie;
-        await SelectedMovieChanged.InvokeAsync(movie);
-        await getMovie.InvokeAsync();
+        //this.SelectedMovie = movie;
+        //await SelectedMovieChanged.InvokeAsync(movie);
+        await getMovie.InvokeAsync(movie.Id);
     }
 
 }

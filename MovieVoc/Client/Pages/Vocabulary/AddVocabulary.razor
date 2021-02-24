@@ -2,51 +2,42 @@
 @inject NavigationManager navigationManager
 @inject MovieRepository movieRepository
 @using MovieVoc.Client.Pages.Word
+@using MovieVoc.Client.Pages.Movie
 
 <h3>Wörter einem Film zufügen hinzufügen:</h3>
-
+ <SearchMoviesTypeahead @bind-SelectedMovie="MovieTobeFound" getMovie="getSelectedMovie"></SearchMoviesTypeahead>
 <div>
     <label>Film suchen:</label>
-
 </div>
 <div>
-    <label>Wort suchen</label>
+    <label>Wort suchen:</label>
 
 </div>
-<div>
-    <label>Schwierigkeits Level</label>
-    <div>
-        <input @bind="DifficultyLevel" />
-    </div>
-</div>
-
-
-
-
-
-<button class="btn btn-primary" @onclick="addWordToVoc">Wort zufügen</button>
-<button class="btn btn-primary" @onclick="addVocToMovie">Vockabeln dem Film zufügen</button>
 
 
 
 @code {
-    public string Word { get; set; }
-    public string Translation { get; set; }
-    public int DifficultyLevel { get; set; }
+
+    private MovieDTO MovieTobeFound = new MovieDTO();
+
+    public MovieDTO SelectedMovie { get; set; }
+
+
+
+    private async void getSelectedMovie()
+    {
+        this.SelectedMovie = await movieRepository.GetMovie(this.MovieTobeFound.Id);
+
+    }
+
+
+
 
 
     private void addWordToVoc()
     {
         Word newWord = new Word();
-        newWord.EnglischWord = this.Word;
-        newWord.Translation = this.Word;
-        newWord.DifficultyLevel = this.DifficultyLevel;
 
-        //movieWords.Vocabulary.Add(newWord);
-
-        this.Word = "";
-        this.Translation = "";
-        this.DifficultyLevel = 0;
         StateHasChanged();
 
     }
