@@ -1,3 +1,4 @@
+using MatBlazor;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +25,7 @@ namespace MovieVoc.Client
             builder.Services.AddScoped<MovieRepository>();
             builder.Services.AddScoped<WordRepository>();
             builder.Services.AddScoped<VocabularyRepository>();
+            builder.Services.AddMatBlazor();
             await builder.Build().RunAsync();
         }
     }
