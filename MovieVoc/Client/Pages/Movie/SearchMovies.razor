@@ -8,18 +8,47 @@
 <SearchMoviesTypeahead getMovie="getSelectedMovie"></SearchMoviesTypeahead>
 
 
-
 @if (SelectedMovie != null)
 {
-    <h3>@SelectedMovie.Title</h3>
-    <p>@SelectedMovie.Summary</p>
-    <button class="btn btn-primary" @onclick="goToLearningPage">Vokabular von diesem Film lernen!</button>
+
+    <MatCard class="movie-mat-card">
+        <MatCardContent>
+            <MatCardMedia Wide="true" ImageUrl="https://material-components.github.io/material-components-web-catalog/static/media/photos/3x2/2.jpg"></MatCardMedia>
+            <div class="movie-mat-card-content">
+                <MatHeadline6 class="movie-mat-card-clean-margin">
+                    @SelectedMovie.Title
+                </MatHeadline6>
+                <MatSubtitle2 class="movie-mat-card-clean-margin">
+                    by Kurt Wagner
+                </MatSubtitle2>
+            </div>
+
+            <MatBody2 class="movie-mat-card-content movie-mat-card-clean-margin">
+                @SelectedMovie.Summary
+            </MatBody2>
+        </MatCardContent>
+        <MatCardActions>
+
+
+            <MatSelect Label="Wählen Sie (optional) einen Schwierigkeitsgrad" @bind-Value="@difficultyLevel">
+                <MatOption TValue="int" Value="0">Alle Wörter</MatOption>
+                <MatOption TValue="int" Value="1">Einfach</MatOption>
+                <MatOption TValue="int" Value="2">Mittel</MatOption>
+                <MatOption TValue="int" Value="3">Schwer</MatOption>
+            </MatSelect>
+
+            <MatButton @onclick="goToLearningPage">Lerne diesen Film</MatButton>
+
+
+        </MatCardActions>
+    </MatCard>
 }
 
 @code {
 
     public MovieDTO SelectedMovie { get; set; }
 
+    int difficultyLevel;
 
     private async void getSelectedMovie(int id)
     {
@@ -29,7 +58,16 @@
 
     private void goToLearningPage()
     {
-        navigationManager.NavigateTo("vocabulary/learn/" + SelectedMovie.Id);
+        if(difficultyLevel == 0)
+        {
+            navigationManager.NavigateTo("vocabulary/learn/" + SelectedMovie.Id);
+        }
+
+        if(difficultyLevel > 0)
+        {
+            navigationManager.NavigateTo($"vocabulary/learn/{SelectedMovie.Id}/{difficultyLevel}");
+        }
+
     }
 
 

@@ -101,3 +101,61 @@
         margin: 5px;
     }
 
+
+
+
+.movie-mat-card {
+    margin-top: 20px;
+    max-width: 700px;
+}
+
+.movie-mat-card-content {
+    padding: 1rem;
+}
+
+.movie-mat-card-clean-margin {
+    margin: 0px;
+}
+
+.mdc-card__actions{
+    display: block;
+}
+
+.mat-select .mdc-select .mdc-select--filled{
+    width: 200px;
+}
+
+.mdc-button mdc-ripple-upgraded {
+    display: block;
+}
+
+
+
+
+
+
+.voc-mat-card {
+    max-width: 400px;
+}
+
+.voc-mat-card-content {
+    padding: 1rem;
+}
+
+.voc-mat-card-clean-margin {
+    margin: 0px;
+}
+
+.make-scrollable .mdc-list {
+    overflow-y: scroll !important;
+    height: 500px !important;
+}
+
+.demo-mat-ripple {
+    width: 300px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: inline-flex;
+}
