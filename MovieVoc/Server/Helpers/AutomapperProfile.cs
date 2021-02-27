@@ -19,6 +19,7 @@ namespace MovieVoc.Server.Helpers
             CreateMap<Movie, MovieDTO>();
             CreateMap<Word, WordDTO>();
             CreateMap<Movie, MovieLightDTO>();
+            CreateMap<Word, VocWord>();
         }
 
     }

@@ -1,0 +1,48 @@
+﻿@page "/vocabulary/learn/{MovieId:int}"
+@page "/vocabulary/learn/{MovieId:int}/{DifficultyLevel:int}"
+@inject VocabularyRepository vocRepository
+
+<h3>LearnVocabulary</h3>
+
+<button @onclick="printVoc">Drucke vocabulary</button>
+
+@code {
+
+    [Parameter] public int MovieId { get; set; }
+    [Parameter] public int DifficultyLevel { get; set; } = 0;
+    List<VocWord> vocabulary { get; set; }
+
+
+    protected async override Task OnInitializedAsync()
+    {
+
+        if(DifficultyLevel == 0)
+        {
+            Console.WriteLine("without diff");
+            List<VocWord> vocabulary = await vocRepository.getVocFromMovie(MovieId);
+
+        }
+        else
+        {
+            Console.WriteLine("with diff");
+            List<VocWord> vocabulary = await vocRepository.getVocFromMovie(MovieId, DifficultyLevel);
+        }
+
+
+    }
+
+    private void printVoc()
+    {
+        if(vocabulary != null)
+        {
+            foreach (VocWord v in vocabulary)
+            {
+                Console.WriteLine(v.EnglischWord);
+            }
+        }
+        Console.WriteLine("here");
+
+        Console.WriteLine("difficulty level: " + DifficultyLevel);
+    }
+
+}

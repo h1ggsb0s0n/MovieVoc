@@ -28,28 +28,45 @@ namespace MovieVoc.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> Post(VocabularyDTO voc)
         {
-            Movie movie = db.Movies.First(mv => mv.Id == voc.MovieId);
-
-            foreach (Word word in voc.ListOfWords)
+            //Movie movie = db.Movies.First(mv => mv.Id == voc.MovieId);
+            Movie movie = db.Movies.Include(p => p.MoviesWords).Single(mv => mv.Id == voc.MovieId);
+            int numberOfWordsAdded = 0; 
+            foreach (WordDTO wordDTO in voc.ListOfWords)
             {
-
-                //todo: check if word already exists
-                //Add word intto Word Table
-
-                db.Add(word);
+                Word word = db.Words.Single(w => w.Id == wordDTO.Id);
 
                 var moviesWords = new MoviesWords
                 {
                     Movie = movie,
                     Word = word
                 };
+                try
+                {
+                    movie.MoviesWords.Add(moviesWords);
+                    movie.MoviesWords.Add(moviesWords);
 
-                db.Add(moviesWords);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+              
+                numberOfWordsAdded++;
 
             }
 
-            await db.SaveChangesAsync();
-            return movie.Id;
+            try
+            {
+                await db.SaveChangesAsync();
+                
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            
+            return numberOfWordsAdded;
 
         }
 
@@ -74,17 +91,45 @@ namespace MovieVoc.Server.Controllers
             return reval;
         }
 
-
-
-
-
-        [HttpGet("{id}")]
-        [AllowAnonymous]
-        public async Task<ActionResult<MovieVocabularyDTO>> Get(int id)
+        [HttpGet("learn/test/{movieId}")]
+        public async Task<ActionResult<List<VocWord>>> GetVocabulary(int movieId)
         {
-            throw new NotImplementedException();
+            List<VocWord> reval = new List<VocWord>();
+            if (movieId > 0)
+            {
+                List<Word> dbResult = await db.Words.ToListAsync();
 
+                foreach (Word word in dbResult)
+                {
+                    VocWord vocWord = new VocWord();
+                    reval.Add(mapper.Map(word, vocWord));
+                }
+            }
+
+            return reval;
         }
+
+
+
+        [HttpGet("learn/test/{movieId}/{difficultylevel}")]
+        public async Task<ActionResult<List<VocWord>>> GetVocabulary(int movieId, int difficultylevel)
+        {
+            List<VocWord> reval = new List<VocWord>();
+            if (movieId > 0)
+            {
+                List<Word> dbResult = await db.Words.Where(w => w.DifficultyLevel == difficultylevel).ToListAsync();
+
+                foreach (Word word in dbResult)
+                {
+                    VocWord vocWord = new VocWord();
+                    reval.Add(mapper.Map(word, vocWord));
+                }
+            }
+
+            return reval;
+        }
+
+
 
     }
 }

@@ -40,5 +40,25 @@ namespace MovieVoc.Client.Repository
             return response.Response;
         }
 
+        public async Task<List<VocWord>> getVocFromMovie(int movieID)
+        {
+            var response = await httpService.Get<List<VocWord>>($"{url}/learn/test/{movieID}");
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+            return response.Response;
+        }
+
+        public async Task<List<VocWord>> getVocFromMovie(int movieID, int difficultyLevel)
+        {
+            var response = await httpService.Get<List<VocWord>>($"{url}/learn/test/{movieID}/{difficultyLevel}");
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+            return response.Response;
+        }
+
     }
 }

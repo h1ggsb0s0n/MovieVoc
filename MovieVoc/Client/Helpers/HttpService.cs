@@ -55,15 +55,19 @@ namespace MovieVoc.Client.Helpers
 
         public async Task<HttpResponseWrapper<T>> Get<T>(string url)
         {
+            Console.WriteLine("Im Wrapper:");
+            Console.WriteLine(url);
             var responseHTTP = await httpClient.GetAsync(url);
-
+            Console.WriteLine("nach get async:");
             if (responseHTTP.IsSuccessStatusCode)
             {
+                Console.WriteLine("success status code");
                 var response = await Deserialize<T>(responseHTTP, defaultJsonSerializerOptions);
                 return new HttpResponseWrapper<T>(response, true, responseHTTP);
             }
             else
             {
+                Console.WriteLine("no success");
                 return new HttpResponseWrapper<T>(default, false, responseHTTP);
             }
         }

@@ -10,7 +10,7 @@ namespace MovieVoc.Shared.DTOs
     public class VocabularyDTO
     {
         public int MovieId { get; set; }
-        public List<Word> ListOfWords { get; set; }
+        public List<WordDTO> ListOfWords { get; set; }
 
     }
 }
