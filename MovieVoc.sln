@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieVoc.Client", "MovieVoc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieVoc.Shared", "MovieVoc\Shared\MovieVoc.Shared.csproj", "{AC069606-CD17-4DF5-9159-AB0AC9D0C3FE}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieVoc.UnitTests", "MovieVoc.UnitTests\MovieVoc.UnitTests.csproj", "{642B6723-C0C1-47B5-B89B-5F864397E1C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{AC069606-CD17-4DF5-9159-AB0AC9D0C3FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC069606-CD17-4DF5-9159-AB0AC9D0C3FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC069606-CD17-4DF5-9159-AB0AC9D0C3FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{642B6723-C0C1-47B5-B89B-5F864397E1C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{642B6723-C0C1-47B5-B89B-5F864397E1C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{642B6723-C0C1-47B5-B89B-5F864397E1C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{642B6723-C0C1-47B5-B89B-5F864397E1C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

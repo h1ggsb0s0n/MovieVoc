@@ -8,6 +8,7 @@ using MovieVoc.Shared.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using MovieVoc.Server.Repository;
 
 namespace MovieVoc.Server.Controllers
 {
@@ -17,14 +18,22 @@ namespace MovieVoc.Server.Controllers
     {
         private readonly ApplicationDbContext db;
         private readonly IMapper mapper;
+        private readonly IMovieStorage movieStorage;
 
-        public MovieController(ApplicationDbContext db, IMapper mapper)
+        public MovieController(ApplicationDbContext db, IMapper mapper, IMovieStorage movieStorage)
         {
             this.db = db;
             this.mapper = mapper;
+            this.movieStorage = movieStorage;
         }
 
 
+        /* This code works:
+        /// <summary>
+        ///  Add Movie
+        /// </summary>
+        /// <param name="movieDto"></param>
+        /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
         public async Task<ActionResult<int>> Post(MovieDTO movieDto)
@@ -34,9 +43,33 @@ namespace MovieVoc.Server.Controllers
             db.Add(movieForDB);
             await db.SaveChangesAsync();
             return movieForDB.Id;
+        }*/
+
+
+
+        /// <summary>
+        ///  Add Movie
+        /// </summary>
+        /// <param name="movieDto"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult<int>> Post(MovieDTO movieDto)
+        {
+            Movie movieForDB = new Movie();
+            movieForDB = mapper.Map(movieDto, movieForDB);
+            return movieStorage.addMovie(movieForDB).Result;
+
         }
 
 
+
+        /*  This code works
+        /// <summary>
+        /// Get Movie
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("movie/{id}")]
         public async Task<ActionResult<Movie>> GetMovieInDb(int id)
         {
@@ -45,9 +78,32 @@ namespace MovieVoc.Server.Controllers
             if (movie == null) { return NotFound(); }
 
             return movie;
+        }*/
+
+
+
+        /// <summary>
+        /// Get Movie
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("movie/{id}")]
+        public async Task<ActionResult<Movie>> GetMovieInDb(int id)
+        {
+            Movie movie = movieStorage.getMovie(id).Result;
+            if (movie == null) { return NotFound(); }
+
+            return movie;
         }
 
 
+
+        /* This code works:
+        /// <summary>
+        /// Search Movie
+        /// </summary>
+        /// <param name="searchText"></param>
+        /// <returns></returns>
         [HttpGet("search/{searchText}")]
         public async Task<ActionResult<List<MovieDTO>>> SearchMovieInDB(string searchText)
         {
@@ -67,7 +123,34 @@ namespace MovieVoc.Server.Controllers
             }
 
             return reval;
+        }*/
+
+
+        /// <summary>
+        /// Search Movie
+        /// </summary>
+        /// <param name="searchText"></param>
+        /// <returns></returns>
+        [HttpGet("search/{searchText}")]
+        public async Task<ActionResult<List<MovieDTO>>> SearchMovieInDB(string searchText)
+        {
+            List<MovieDTO> reval = new List<MovieDTO>();
+            if (!string.IsNullOrWhiteSpace(searchText))
+            {
+
+                List<Movie> dbResult = movieStorage.searchMovie(searchText).Result;
+
+                foreach (Movie movie in dbResult)
+                {
+                    MovieDTO movieDTO = new MovieDTO();
+                    reval.Add(mapper.Map(movie, movieDTO));
+                }
+            }
+
+            return reval;
         }
+
+
 
         /*
         [HttpPost]
