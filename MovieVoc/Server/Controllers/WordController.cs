@@ -7,11 +7,13 @@ using MovieVoc.Shared.DTOs;
 using MovieVoc.Shared.Entities;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MovieVoc.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Roles = "Admin")]
     public class WordController : ControllerBase
     {
         private readonly ApplicationDbContext db;

@@ -26,7 +26,9 @@ namespace MovieVoc.Client
             builder.Services.AddScoped<WordRepository>();
             builder.Services.AddScoped<VocabularyRepository>();
             builder.Services.AddMatBlazor();
+            builder.Services.AddApiAuthorization();
             await builder.Build().RunAsync();
+            
         }
     }
 }
