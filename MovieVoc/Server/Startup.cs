@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MovieVoc.Server.Repository;
 using System.Linq;
 
 namespace MovieVoc.Server
@@ -29,6 +30,7 @@ namespace MovieVoc.Server
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddAutoMapper(typeof(Startup));
+            services.AddScoped<IMovieStorage, MovieStorage>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -16,13 +16,11 @@ namespace MovieVoc.Server.Controllers
     [Route("api/[controller]")]
     public class MovieController: ControllerBase
     {
-        private readonly ApplicationDbContext db;
         private readonly IMapper mapper;
         private readonly IMovieStorage movieStorage;
 
-        public MovieController(ApplicationDbContext db, IMapper mapper, IMovieStorage movieStorage)
+        public MovieController(IMapper mapper, IMovieStorage movieStorage)
         {
-            this.db = db;
             this.mapper = mapper;
             this.movieStorage = movieStorage;
         }
@@ -90,7 +88,7 @@ namespace MovieVoc.Server.Controllers
         [HttpGet("movie/{id}")]
         public async Task<ActionResult<Movie>> GetMovieInDb(int id)
         {
-            Movie movie = movieStorage.getMovie(id).Result;
+            Movie movie = await movieStorage.getMovie(id);
             if (movie == null) { return NotFound(); }
 
             return movie;
@@ -138,7 +136,7 @@ namespace MovieVoc.Server.Controllers
             if (!string.IsNullOrWhiteSpace(searchText))
             {
 
-                List<Movie> dbResult = movieStorage.searchMovie(searchText).Result;
+                List<Movie> dbResult = await movieStorage.searchMovie(searchText);
 
                 foreach (Movie movie in dbResult)
                 {
