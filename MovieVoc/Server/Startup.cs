@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MovieVoc.Server.Helpers;
 using System.Linq;
 
 namespace MovieVoc.Server
@@ -37,7 +38,8 @@ namespace MovieVoc.Server
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddIdentityServer()
-                .AddApiAuthorization<IdentityUser, ApplicationDbContext>();
+                .AddApiAuthorization<IdentityUser, ApplicationDbContext>()
+                .AddProfileService<IdentityProfileService>();
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
