@@ -15,7 +15,7 @@ namespace MovieVoc.Server.Helpers
     public class IdentityProfileService : IProfileService
     {
 
-        //Code from official page
+        //Code von offizieller Seite.
 
         private readonly IUserClaimsPrincipalFactory<IdentityUser> claimsFactory;
         private readonly UserManager<IdentityUser> userManager;

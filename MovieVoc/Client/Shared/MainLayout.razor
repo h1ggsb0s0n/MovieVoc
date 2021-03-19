@@ -7,7 +7,17 @@
 
     <div class="main">
         <div class="top-row px-4">
-            <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+            <AuthorizeView>
+                <Authorized>
+                    <a href="Logout" class="nav-link btn btn-link">Log out</a>
+                </Authorized>
+                <NotAuthorized>
+                    <a href="Register">Register</a>
+                    <a href="Login" class="nav-link btn btn-link">Login</a>
+                </NotAuthorized>
+            </AuthorizeView>
+            
+            <a href="https://github.com/h1ggsb0s0n/MovieVoc" target="_blank" class="ml-md-auto">Source Code</a>
         </div>
 
         <div class="content px-4">
