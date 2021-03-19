@@ -32,7 +32,7 @@ namespace MovieVoc.Client.Repository
 
         public async Task<List<WordDTO>> GetWordSuggestions(string name)
         {
-            var response = await httpService.Get<List<WordDTO>>($"{url}/search/{name}");
+            var response = await httpService.Get<List<WordDTO>>($"{url}/search/{name}", includeToken: false);
             if (!response.Success)
             {
                 throw new ApplicationException(await response.GetBody());
@@ -42,7 +42,7 @@ namespace MovieVoc.Client.Repository
 
         public async Task<List<VocWord>> getVocFromMovie(int movieID)
         {
-            var response = await httpService.Get<List<VocWord>>($"{url}/learn/test/{movieID}");
+            var response = await httpService.Get<List<VocWord>>($"{url}/learn/test/{movieID}", includeToken: false);
             if (!response.Success)
             {
                 throw new ApplicationException(await response.GetBody());
@@ -52,7 +52,7 @@ namespace MovieVoc.Client.Repository
 
         public async Task<List<VocWord>> getVocFromMovie(int movieID, int difficultyLevel)
         {
-            var response = await httpService.Get<List<VocWord>>($"{url}/learn/test/{movieID}/{difficultyLevel}");
+            var response = await httpService.Get<List<VocWord>>($"{url}/learn/test/{movieID}/{difficultyLevel}", includeToken: false);
             if (!response.Success)
             {
                 throw new ApplicationException(await response.GetBody());

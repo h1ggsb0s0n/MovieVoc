@@ -10,28 +10,32 @@ namespace MovieVoc.Client.Helpers
 {
     public class HttpService : IHttpService
     {
-        private readonly HttpClient httpClient;
+        //Identity Server 4
+        private readonly HttpClientWithToken httpClientWithToken;
+        private readonly HttpClientWithoutToken httpClientWithoutToken;
+
 
         private JsonSerializerOptions defaultJsonSerializerOptions =>
             new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
 
-        public HttpService(HttpClient httpClient)
+        public HttpService(HttpClientWithToken httpClientWithToken)
         {
-            this.httpClient = httpClient;
+            this.httpClientWithToken = httpClientWithToken;
         }
 
         public async Task<HttpResponseWrapper<object>> Post<T>(string url, T data)
         {
+            var httpClient = GetHttpClient();
             var dataJson = JsonSerializer.Serialize(data);
             var stringContent = new StringContent(dataJson, Encoding.UTF8, "application/json");
             var response = await httpClient.PostAsync(url, stringContent);
             return new HttpResponseWrapper<object>(null, response.IsSuccessStatusCode, response);
         }
 
-        public async Task<HttpResponseWrapper<TResponse>> Post<T, TResponse>(string url, T data)
+        public async Task<HttpResponseWrapper<TResponse>> Post<T, TResponse>(string url, T data, bool includeToken = true)
         {
 
-           
+            var httpClient = GetHttpClient(includeToken);
             var dataJson = JsonSerializer.Serialize(data);
             var stringContent = new StringContent(dataJson, Encoding.UTF8, "application/json");
             var response = await httpClient.PostAsync(url, stringContent);
@@ -46,22 +50,12 @@ namespace MovieVoc.Client.Helpers
             }
         }
 
-
-        private async Task<T> Deserialize<T>(HttpResponseMessage httpResponse, JsonSerializerOptions options)
+        public async Task<HttpResponseWrapper<T>> Get<T>(string url, bool includeToken = true)
         {
-            var responseString = await httpResponse.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<T>(responseString, options);
-        }
-
-        public async Task<HttpResponseWrapper<T>> Get<T>(string url)
-        {
-            Console.WriteLine("Im Wrapper:");
-            Console.WriteLine(url);
+            var httpClient = GetHttpClient(includeToken);
             var responseHTTP = await httpClient.GetAsync(url);
-            Console.WriteLine("nach get async:");
             if (responseHTTP.IsSuccessStatusCode)
             {
-                Console.WriteLine("success status code");
                 var response = await Deserialize<T>(responseHTTP, defaultJsonSerializerOptions);
                 return new HttpResponseWrapper<T>(response, true, responseHTTP);
             }
@@ -71,5 +65,28 @@ namespace MovieVoc.Client.Helpers
                 return new HttpResponseWrapper<T>(default, false, responseHTTP);
             }
         }
+
+
+        private async Task<T> Deserialize<T>(HttpResponseMessage httpResponse, JsonSerializerOptions options)
+        {
+            var responseString = await httpResponse.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<T>(responseString, options);
+        }
+
+
+
+
+        private HttpClient GetHttpClient(bool includeToken = true)
+        {
+            if (includeToken)
+            {
+                return httpClientWithToken.HttpClient;
+            }
+            else
+            {
+                return httpClientWithoutToken.HttpClient;
+            }
+        }
+
     }
 }

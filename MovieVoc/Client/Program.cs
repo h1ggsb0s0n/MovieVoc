@@ -1,4 +1,5 @@
 using MatBlazor;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +21,13 @@ namespace MovieVoc.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
-            builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddHttpClient<HttpClientWithToken>(
+                 client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+                 .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();//Schmeisst das Token an den Header
+
+            builder.Services.AddHttpClient<HttpClientWithoutToken>(
+              client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+
             builder.Services.AddScoped<IHttpService, HttpService>();
             builder.Services.AddScoped<MovieRepository>();
             builder.Services.AddScoped<WordRepository>();

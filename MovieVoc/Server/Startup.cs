@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MovieVoc.Server.Helpers;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 
 namespace MovieVoc.Server
@@ -19,6 +20,9 @@ namespace MovieVoc.Server
     {
         public Startup(IConfiguration configuration)
         {
+            //403 Error -> Die Role Field von JWT wird in einem falschen Feld gespeichert als von IS4 erwartet.
+            //dasinboundClaimMap wird gecleared.
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             Configuration = configuration;
         }
 
