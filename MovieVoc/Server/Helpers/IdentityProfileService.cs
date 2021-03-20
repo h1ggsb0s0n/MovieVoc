@@ -12,10 +12,13 @@ using System.Threading.Tasks;
 
 namespace MovieVoc.Server.Helpers
 {
+    /// <summary>
+    /// Code Copiert
+    /// </summary>
     public class IdentityProfileService : IProfileService
     {
 
-        //Code von offizieller Seite.
+        
 
         private readonly IUserClaimsPrincipalFactory<IdentityUser> claimsFactory;
         private readonly UserManager<IdentityUser> userManager;
@@ -27,6 +30,11 @@ namespace MovieVoc.Server.Helpers
             this.userManager = userManager;
         }
 
+        /// <summary>
+        /// Zufügen von Claims in dem AspNetUserClaims Table an das Token
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
             var userId = context.Subject.GetSubjectId();

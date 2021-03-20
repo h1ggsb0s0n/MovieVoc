@@ -6,8 +6,8 @@
 
 <AuthorizeView>
     <Authorized>
-        <span>Hello, @context.User.Identity.Name!</span>
-        <button class="nav-link btn btn-link" @onclick="BeginSignOut">Log out</button>
+        <span>Hallo, @context.User.Identity.Name!</span>
+        <button class="nav-link btn btn-link" @onclick="LogOut">Log out</button>
     </Authorized>
     <NotAuthorized>
         <a href="/authentication/register">Register</a>
@@ -16,13 +16,17 @@
 </AuthorizeView>
 
 @code{
-
+    
+    //
     /// <summary>
-    /// Code Copied from official page
+    /// Achtung: dieser Component muss innerhalb der Applikation sein. Die Tags dürfen nicht direkt in der Applikation sein
+    /// -> Sonst gibt es die folgende Fehlermeldung:
+    /// The logout was not initiated from within the page.
+    /// Code copiert.
     /// </summary>
     /// <param name="args"></param>
     /// <returns></returns>
-    private async Task BeginSignOut(MouseEventArgs args)
+    private async Task LogOut(MouseEventArgs args)
     {
         await SignOutManager.SetSignOutState();
         Navigation.NavigateTo("authentication/logout");
