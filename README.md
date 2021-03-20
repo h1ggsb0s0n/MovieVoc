@@ -1,5 +1,6 @@
 # Wilkommen zu Movie Voc
 
+Die folgenden Aktionen können derzeit durchgeführt werden:
 Movie Voc ist eine Applikation welche es ermöglicht  Vokabular von Filmen zu lernen. <br />
 Die folgenden Aktionen können derzeit durchgeführt werden:<br />
 

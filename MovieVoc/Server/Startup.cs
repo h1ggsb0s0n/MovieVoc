@@ -1,14 +1,21 @@
 using AutoMapper;
 using MatBlazor;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+<<<<<<< HEAD
 using MovieVoc.Server.Repository;
+=======
+using MovieVoc.Server.Helpers;
+using System.IdentityModel.Tokens.Jwt;
+>>>>>>> login-system
 using System.Linq;
 
 namespace MovieVoc.Server
@@ -17,6 +24,9 @@ namespace MovieVoc.Server
     {
         public Startup(IConfiguration configuration)
         {
+            //403 Error -> Die Role Field von JWT wird in einem falschen Feld gespeichert als von IS4 erwartet.
+            //dasinboundClaimMap wird gecleared.
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             Configuration = configuration;
         }
 
@@ -27,6 +37,22 @@ namespace MovieVoc.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDefaultIdentity<IdentityUser>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = false;
+            })
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddIdentityServer()
+                .AddApiAuthorization<IdentityUser, ApplicationDbContext>()
+                .AddProfileService<IdentityProfileService>();
+
+            services.AddAuthentication()
+                .AddIdentityServerJwt();
+
+
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddAutoMapper(typeof(Startup));
@@ -53,6 +79,11 @@ namespace MovieVoc.Server
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseIdentityServer();
+            app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {
