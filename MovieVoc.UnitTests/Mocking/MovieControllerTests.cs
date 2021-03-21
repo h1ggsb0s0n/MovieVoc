@@ -85,17 +85,11 @@ namespace MovieVoc.UnitTests.Mocking
 
         public async Task addMovie_WhenCalled_TestAuthorization()
         {
-            Mock<IMovieStorage> movieStorage = new Mock<IMovieStorage>();
-            movieStorage.Setup(s => s.getMovie(1)).ReturnsAsync((Movie)null);
-            var controller = new MovieController(mapper, movieStorage.Object);
+            var controller = new MovieController(mapper, storage.Object);
 
-            var result = await controller.GetMovieInDb(1);
-            Assert.That(result.Result, Is.InstanceOf<NotFoundResult>());
-
-            var controller = new MovieController();
             var mock = new Mock<ControllerContext>();
-            mock.SetupGet(x => x.HttpContext.User.Identity.Name).Returns("SOMEUSER");
-            mock.SetupGet(x => x.HttpContext.Request.IsAuthenticated).Returns(true);
+            
+            mock.SetupGet(x => x.HttpContext.Request.authenticated).Returns(true);
             controller.ControllerContext = mock.Object;
 
 

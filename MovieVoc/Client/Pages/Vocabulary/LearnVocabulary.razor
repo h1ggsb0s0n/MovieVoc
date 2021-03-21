@@ -3,78 +3,78 @@
 @inject VocabularyRepository vocRepository
 
 
+@if (vocabulary != null && vocabulary.Any())
+{
+    <div class="mat-layout-grid">
+        <div class="mat-layout-grid-inner">
 
 
-<div class="mat-layout-grid">
-    <div class="mat-layout-grid-inner">
+            <div class="mat-layout-grid-cell">
+                <MatCard class="voc-mat-card">
+                    <MatCardContent>
+                        <div class="voc-mat-card-content">
+                            @if (!showTranslation)
+                            {
 
-        <div class="mat-layout-grid-cell">
+                                <MatHeadline5 class="voc-mat-card-clean-margin">
+                                    Englisches Wort:
+                                </MatHeadline5>
+                                <MatRipple class="demo-mat-ripple" Color="@MatRippleColor.Primary">
+                                    <MatH6>@currentVocWord.EnglischWord</MatH6>
+                                </MatRipple>
+                            }
+                            else
+                            {
 
-            <MatCard class="voc-mat-card">
-                <MatCardContent>
-                    <div class="voc-mat-card-content">
-                        <MatHeadline6 class="voc-mat-card-clean-margin">
-                            Our Changing Planet
-                        </MatHeadline6>
-                    </div>
-                </MatCardContent>
-            </MatCard>
+                                <MatHeadline5 class="voc-mat-card-clean-margin">
+                                    Deutsche Übersetzung:
+                                </MatHeadline5>
+                                <MatRipple class="demo-mat-ripple" Color="@MatRippleColor.Secondary">
+                                    <MatH6>@currentVocWord.Translation</MatH6>
+                                </MatRipple>
+                            }
 
-        </div>
+                        </div>
+                    </MatCardContent>
+                    <MatCardActions>
+                        <MatCardActionButtons>
 
+                        </MatCardActionButtons>
+                        <MatButton OnClick="@toggleTranslation">Übersetzung anzeigen</MatButton>
+                        <MatCardActionIcons>
+                            <MatIconButton Icon="@MatIconNames.Check" OnClick="@wordKnown"></MatIconButton>
+                            <MatIconButton Icon="@MatIconNames.Cancel" OnClick="@wordUnknown"></MatIconButton>
+                        </MatCardActionIcons>
+                    </MatCardActions>
+                </MatCard>
+            </div>
 
-        <div class="mat-layout-grid-cell">
-            <MatCard class="voc-mat-card">
-                <MatCardContent>
-                    <div class="voc-mat-card-content">
-                        @if (showTranslation)
-                        {
-                            <MatHeadline6 class="voc-mat-card-clean-margin">
-                                Our Changing Planet
-                            </MatHeadline6>
-                        }
-                        else
-                        {
-                            <MatRipple class="demo-mat-ripple" Color="@MatRippleColor.Secondary">
-                                Secondary
-                            </MatRipple>
-                        }
-
-
-
-                    </div>
-                </MatCardContent>
-            </MatCard>
-        </div>
-
-        <div class="mat-layout-grid-cell make-scrollable">
-            <MatList>
-                @if (vocabulary.Any())
-                {
-                    @foreach (VocWord voc in vocabulary)
+            <div class="mat-layout-grid-cell make-scrollable">
+                <MatList>
+                    @if (vocabulary.Any())
                     {
-                        <MatListItem>
-                            @voc.EnglischWord
-                        </MatListItem>
+                        @foreach (VocWord voc in vocabulary)
+                        {
+                            <MatListItem>
+                                @voc.EnglischWord
+                            </MatListItem>
+                        }
                     }
-                }
 
-            </MatList>
+                </MatList>
+            </div>
         </div>
     </div>
-</div>
+}
+else
+{
+    <p>Lade Vokabular...</p>
+}
 
-<MatButton @onclick="toggleTranslation">Übersetzung anzeigen</MatButton>
-<MatButton @onclick="wordUnknown">Wort nicht gewusst</MatButton>
+
+
 <MatButton @onclick="nextCard">Nächstes Wort</MatButton>
-<MatButton @onclick="StateHasChanged">State change</MatButton>
 
-
-
-
-
-
-<button @onclick="printVoc">Drucke vocabulary</button>
 
 @code {
 
@@ -82,7 +82,6 @@
     [Parameter] public int DifficultyLevel { get; set; } = 0;
     List<VocWord> vocabulary { get; set; } = new List<VocWord>();
 
-    public IEnumerable<string> items = Enumerable.Range(0, 333000).Select(i => i.ToString()).ToArray();
     int currentIndex;
     VocWord currentVocWord;
     bool showTranslation = false;
@@ -92,13 +91,12 @@
 
         if (DifficultyLevel == 0)
         {
-            Console.WriteLine("without diff");
-            List<VocWord> vocabulary = await vocRepository.getVocFromMovie(MovieId);
+            this.vocabulary = await vocRepository.getVocFromMovie(MovieId);
+            Console.WriteLine("geladen!");
 
         }
         else
         {
-            Console.WriteLine("with diff");
             List<VocWord> vocabulary = await vocRepository.getVocFromMovie(MovieId, DifficultyLevel);
             StateHasChanged();
         }
@@ -107,6 +105,7 @@
         {
             this.currentVocWord = vocabulary.First();
             StateHasChanged();
+
         }
 
     }
@@ -119,20 +118,26 @@
             this.currentVocWord = nextVocWord;
             showTranslation = false;
 
-        } else
+        }
+        else
         {
-            //start at the beginning
+            this.currentVocWord = vocabulary.ElementAtOrDefault(0);
+            this.currentIndex = 0;
+
 
         }
     }
 
     private void toggleTranslation()
     {
+
         if (showTranslation)
         {
-            this.showTranslation = true;
-        }else {
             this.showTranslation = false;
+        }
+        else
+        {
+            this.showTranslation = true;
         }
     }
 
@@ -142,19 +147,10 @@
         this.currentVocWord.numberOfTries++;
     }
 
-
-    private void printVoc()
+    private void wordKnown()
     {
-        if (vocabulary != null)
-        {
-            foreach (VocWord v in vocabulary)
-            {
-                Console.WriteLine(v.EnglischWord);
-            }
-        }
-        Console.WriteLine("here");
-
-        Console.WriteLine("difficulty level: " + DifficultyLevel);
+        this.currentVocWord.correct = true;
+        this.currentVocWord.numberOfTries++;
     }
 
 }

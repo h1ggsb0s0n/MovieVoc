@@ -4,30 +4,26 @@
 
 <h3>Wörter der Datenbank zufügen</h3>
 
-<div>
-    <label>Wort:</label>
-    <div>
-        <input @bind="Word" />
-    </div>
-</div>
-<div>
-    <label>Uebersetzung</label>
-    <div>
-        <input type="text" @bind="Translation" />
-    </div>
-</div>
-<div>
-    <label>Schwierigkeits Level</label>
-    <div>
-        <input @bind="DifficultyLevel" />
-    </div>
-</div>
+<p>
+    <MatTextField @bind-Value="@Word" Label="Wort:"></MatTextField>
+</p>
+<p>
+    <MatTextField @bind-Value="@Translation" Label="Übersetzung:"></MatTextField>
+</p>
+<p>
+    <MatSelect HelperText="Helper Text" Label="Schwierigkeitslevel" @bind-Value="@DifficultyLevel">
+        <MatOption TValue="int" Value="1">Einfach</MatOption>
+        <MatOption TValue="int" Value="2">Mittel</MatOption>
+        <MatOption TValue="int" Value="3">Schwer</MatOption>
 
-<button class="btn btn-primary" @onclick="addWordsToList">Wort zufügen</button>
+    </MatSelect>
+</p>
+
+<MatButton OnClick="@addWordsToList">Wort der Liste hinzufügen</MatButton>
 
 <WordSelector SelectedWords="words"></WordSelector>
 
-<button class="btn btn-primary" @onclick="addWordsToDatabase">Alle Selektierten Wörter der Datenbank zufügen</button>
+<MatButton OnClick="@addWordsToDatabase"  Raised="true">Alle Wörter in der Liste der Datenbank zufügen</MatButton>
 
 
 

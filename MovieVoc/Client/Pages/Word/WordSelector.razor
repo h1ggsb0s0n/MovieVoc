@@ -1,20 +1,26 @@
 ﻿<div class="word-selector">
-    <ul class="word-selectable-ul">
-        @foreach (var item in SelectedWords)
-        {
-            <li @onclick="@(() => Deselect(item))">@item.EnglischWord</li>
-        }
-    </ul>
-    <div class="word-selector-buttons">
-        <button type="button" @onclick="SelectAll">Alle Entfernen</button>
-        <button type="button" @onclick="DeselectAll">Alle Hinzufügen</button>
+    <div>
+        <p>Wörter <strong>Zufügen</strong></p>
+        <ul class="word-selectable-ul">
+            @foreach (var item in SelectedWords)
+            {
+                <li @onclick="@(() => Deselect(item))">@item.EnglischWord</li>
+            }
+        </ul>
     </div>
-    <ul class="word-selectable-ul">
-        @foreach (var word in NotSelectedWords)
-        {
-            <li @onclick="@(() => Select(word))">@word.EnglischWord</li>
-        }
-    </ul>
+    <div class="word-selector-buttons">
+        <MatButton OnClick="@SelectAll">Alle Hinzufügen</MatButton>
+        <MatButton OnClick="@DeselectAll">Alle Entfernen</MatButton>
+    </div>
+    <div>
+        <p>Wörter <strong>NICHT</strong>zufügen</p>
+        <ul class="word-selectable-ul">
+            @foreach (var word in NotSelectedWords)
+            {
+                <li @onclick="@(() => Select(word))">@word.EnglischWord</li>
+            }
+        </ul>
+    </div>
 </div>
 
 @code {
@@ -28,23 +34,27 @@
     {
         NotSelectedWords.Remove(item);
         SelectedWords.Add(item);
+        StateHasChanged();
     }
 
     private void Deselect(WordDTO item)
     {
         SelectedWords.Remove(item);
         NotSelectedWords.Add(item);
+        StateHasChanged();
     }
 
     private void SelectAll()
     {
         SelectedWords.AddRange(NotSelectedWords);
         NotSelectedWords.Clear();
+        StateHasChanged();
     }
 
     private void DeselectAll()
     {
         NotSelectedWords.AddRange(SelectedWords);
         SelectedWords.Clear();
+        StateHasChanged();
     }
 }
