@@ -10,12 +10,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-<<<<<<< HEAD
 using MovieVoc.Server.Repository;
-=======
 using MovieVoc.Server.Helpers;
 using System.IdentityModel.Tokens.Jwt;
->>>>>>> login-system
 using System.Linq;
 
 namespace MovieVoc.Server

@@ -18,9 +18,10 @@ namespace MovieVoc.Client.Helpers
         private JsonSerializerOptions defaultJsonSerializerOptions =>
             new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
 
-        public HttpService(HttpClientWithToken httpClientWithToken)
+        public HttpService(HttpClientWithToken httpClientWithToken, HttpClientWithoutToken httpClientWithoutToken)
         {
             this.httpClientWithToken = httpClientWithToken;
+            this.httpClientWithoutToken = httpClientWithoutToken;
         }
 
         public async Task<HttpResponseWrapper<object>> Post<T>(string url, T data)
