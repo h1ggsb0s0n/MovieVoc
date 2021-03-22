@@ -55,9 +55,9 @@
                     {
                         @foreach (VocWord voc in vocabulary)
                         {
-                            <MatListItem>
-                                @voc.EnglischWord
-                            </MatListItem>
+                    <MatListItem Style="@(voc.correct ? "background-color: green" : "background-color: red")">
+                        @voc.EnglischWord
+                    </MatListItem>
                         }
                     }
 

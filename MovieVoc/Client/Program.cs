@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using MatBlazor;
 
 namespace MovieVoc.Client
 {
@@ -34,6 +35,15 @@ namespace MovieVoc.Client
             builder.Services.AddScoped<VocabularyRepository>();
             builder.Services.AddMatBlazor();
             builder.Services.AddApiAuthorization();
+            builder.Services.AddMatToaster(config =>
+            {
+                config.Position = MatToastPosition.BottomRight;
+                config.PreventDuplicates = true;
+                config.NewestOnTop = true;
+                config.ShowCloseButton = true;
+                config.MaximumOpacity = 95;
+                config.VisibleStateDuration = 3000;
+            });
             await builder.Build().RunAsync();
             
         }

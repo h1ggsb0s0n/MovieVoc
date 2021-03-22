@@ -1,6 +1,8 @@
 ﻿@page "/movie/create"
 @inject NavigationManager navigationManager
 @inject MovieRepository movieRepository
+@using System;
+@using System.IO;
 
 <h3>CreateMovie</h3>
 
@@ -16,7 +18,7 @@
 
     <div>
         <label>Zusammenfassung:</label>
-        <textarea class="form-control" @bind ="Movie.Summary" rows="4" cols="50"></textarea>
+        <textarea class="form-control" @bind="Movie.Summary" rows="4" cols="50"></textarea>
 
         <ValidationMessage For="@(() => Movie.Summary)" />
 
@@ -25,45 +27,63 @@
     <div class="form-group">
         <label>Veröffentlichungsdatum:</label>
         <div>
-            <InputDate type ="date" class="form-control"  @bind-Value="@Movie.ReleaseDate" />
+            <InputDate type="date" class="form-control" @bind-Value="@Movie.ReleaseDate" />
             <ValidationMessage For="@(() => Movie.ReleaseDate)" />
         </div>
     </div>
     <div class="form-group">
         <label>Poster:</label>
         <div>
-            <InputText class="form-control" @bind-Value="@Movie.Poster" />
+            <MatFileUpload OnChange="@FilesReadyForContent" Label="Laden Sie ein Bild des Filmes hoch"></MatFileUpload>
             <ValidationMessage For="@(() => Movie.Poster)" />
         </div>
     </div>
-
-    <button class="btn btn-primary" type="submit">Save Movie</button>
+    <div>
+        <img src="data:image/jpeg;base64, @Movie.Poster" style="height: 300px;" />
+    </div>
+    <MatButton type="submit" Raised="true">Film in der Datenbank speichern</MatButton>
 </EditForm>
 
 @code {
 
     private MovieDTO Movie = new MovieDTO();
-    
-    
 
     private async Task saveMovie()
     {
-        
+            var movieId = await movieRepository.CreateMovie(Movie);
+    }
+
+    /// <summary>
+    /// Teil des Codes von MarBlazor genommen, musste jedoch vereinfacht werden.
+    /// Todo: Errorhandling
+    /// </summary>
+    /// <param name="files"></param>
+    /// <returns></returns>
+    async Task FilesReadyForContent(IMatFileUploadEntry[] files)
+    {
         try
         {
-            Movie.Title = "";
-            Console.WriteLine("Save Movie" + Movie.Title);
-            var movieId = await movieRepository.CreateMovie(Movie);
-            Console.WriteLine(Movie);
+            var file = files.FirstOrDefault();
+            if (file == null)
+            {
+                return;
+            }
 
+            using (var stream = new MemoryStream())
+            {
+                await file.WriteToStreamAsync(stream);
+                Movie.Poster = Convert.ToBase64String(stream.ToArray());
+            }
         }
-        catch (Exception ex)
+
+        catch (Exception e)
         {
-
+            Console.WriteLine(e.Message);
+            Console.WriteLine(e.StackTrace);
         }
-
-            
+        finally
+        {
+            await InvokeAsync(StateHasChanged);
+        }
     }
-    
-
 }

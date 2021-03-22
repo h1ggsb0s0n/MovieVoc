@@ -82,7 +82,7 @@ namespace MovieVoc.UnitTests.Mocking
             storage.Verify(s => s.addMovie(It.IsAny<Movie>()));
         }
 
-
+        /*
         public async Task addMovie_WhenCalled_TestAuthorization()
         {
             var controller = new MovieController(mapper, storage.Object);
@@ -91,9 +91,9 @@ namespace MovieVoc.UnitTests.Mocking
             
             mock.SetupGet(x => x.HttpContext.Request.authenticated).Returns(true);
             controller.ControllerContext = mock.Object;
+            
 
-
-        }
+        }*/
 
 
 
@@ -122,7 +122,7 @@ namespace MovieVoc.UnitTests.Mocking
         }*/
 
         [Test]
-        public async Task getMovie_WhenCalled_ReturnNotFound()
+        public async Task getMovie_WhenCalled_ReturnSomething()
         {
             Mock<IMovieStorage> movieStorage = new Mock<IMovieStorage>();
             movieStorage.Setup(s => s.getMovie(1)).ReturnsAsync((Movie)null);

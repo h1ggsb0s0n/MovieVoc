@@ -26,19 +26,19 @@ namespace MovieVoc.Server.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<int>> Post(List<Word> words)
+        public async Task<ActionResult<int>> AddWordsToDB(List<WordDTO> words)
         {
-
-            foreach (Word word in words)
+            int numberOfWordsAdded = 0;
+            foreach (WordDTO word in words)
             {
+                Word newWord = new Word();
+                mapper.Map(word, newWord);
                 //todo: check if word already exists
-                //Add word intto Word Table
-                db.Add(word);
+                db.Add(newWord);
             }
 
             await db.SaveChangesAsync();
-            //return word.Id;
-            return 1;
+            return Ok(numberOfWordsAdded);
 
         }
 

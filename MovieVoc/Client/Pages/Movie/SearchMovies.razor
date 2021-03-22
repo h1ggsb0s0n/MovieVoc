@@ -13,14 +13,11 @@
 
     <MatCard class="movie-mat-card">
         <MatCardContent>
-            <MatCardMedia Wide="true" ImageUrl="https://material-components.github.io/material-components-web-catalog/static/media/photos/3x2/2.jpg"></MatCardMedia>
+            <img src="data:image/jpeg;base64, @SelectedMovie.Poster" style="width: 300px;" />
             <div class="movie-mat-card-content">
                 <MatHeadline6 class="movie-mat-card-clean-margin">
                     @SelectedMovie.Title
                 </MatHeadline6>
-                <MatSubtitle2 class="movie-mat-card-clean-margin">
-                    by Kurt Wagner
-                </MatSubtitle2>
             </div>
 
             <MatBody2 class="movie-mat-card-content movie-mat-card-clean-margin">

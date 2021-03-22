@@ -1,58 +1,65 @@
 ﻿@page "/word/addwords"
 @inject NavigationManager navigationManager
-@inject MovieRepository movieRepository
+@inject WordRepository wordRepository
+@inject IMatToaster Toaster
 
 <h3>Wörter der Datenbank zufügen</h3>
 
-<p>
-    <MatTextField @bind-Value="@Word" Label="Wort:"></MatTextField>
-</p>
-<p>
-    <MatTextField @bind-Value="@Translation" Label="Übersetzung:"></MatTextField>
-</p>
-<p>
-    <MatSelect HelperText="Helper Text" Label="Schwierigkeitslevel" @bind-Value="@DifficultyLevel">
-        <MatOption TValue="int" Value="1">Einfach</MatOption>
-        <MatOption TValue="int" Value="2">Mittel</MatOption>
-        <MatOption TValue="int" Value="3">Schwer</MatOption>
+<EditForm Model="Word" OnValidSubmit="addWordsToList">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <MatTextField @bind-Value="@Word.EnglischWord" Label="Wort:"></MatTextField>
+        <ValidationMessage For="@(() => Word.EnglischWord)" />
+    </div>
+    <div class="form-group">
+        <MatTextField @bind-Value="@Word.Translation" Label="Übersetzung:"></MatTextField>
+        <ValidationMessage For="@(() => Word.Translation)" />
+    </div>
+    <div class="form-group">
+        <MatSelect HelperText="Helper Text" Label="Schwierigkeitslevel" @bind-Value="@Word.DifficultyLevel">
+            <MatOption TValue="int" Value="1">Einfach</MatOption>
+            <MatOption TValue="int" Value="2">Mittel</MatOption>
+            <MatOption TValue="int" Value="3">Schwer</MatOption>
 
-    </MatSelect>
-</p>
+        </MatSelect>
+        <ValidationMessage For="@(() => Word.DifficultyLevel)" />
+    </div>
 
-<MatButton OnClick="@addWordsToList">Wort der Liste hinzufügen</MatButton>
+    <MatButton type="submit" OnClick="@addWordsToList">Wort der Liste hinzufügen</MatButton>
+</EditForm>
 
 <WordSelector SelectedWords="words"></WordSelector>
 
-<MatButton OnClick="@addWordsToDatabase"  Raised="true">Alle Wörter in der Liste der Datenbank zufügen</MatButton>
+<MatButton OnClick="@addWordsToDatabase" Raised="true">Alle Wörter in der Liste der Datenbank zufügen</MatButton>
 
 
 
 @code {
-    public string Word { get; set; }
-    public string Translation { get; set; }
-    public int DifficultyLevel { get; set; }
+
+    public WordDTO Word = new WordDTO();
 
     List<WordDTO> words = new List<WordDTO>();
 
     private void addWordsToList()
     {
         WordDTO newWord = new WordDTO();
-        newWord.EnglischWord = this.Word;
-        newWord.Translation = this.Word;
-        newWord.DifficultyLevel = this.DifficultyLevel;
+        newWord.EnglischWord = this.Word.EnglischWord;
+        newWord.Translation = this.Word.Translation;
+        newWord.DifficultyLevel = this.Word.DifficultyLevel;
 
         words.Add(newWord);
 
-        this.Word = "";
-        this.Translation = "";
-        this.DifficultyLevel = 0;
+        //Reset Form Field
+        this.Word = new WordDTO();
         StateHasChanged();
 
     }
 
-    private void addWordsToDatabase()
+    private async Task addWordsToDatabase()
     {
-
+        int numberOfWordsAdded = await wordRepository.AddWords(words);
+        //Toaster.Add("X Wörter wurden der Datenabnk zugefügt", MatToastType.Success, "2");
+        Toaster.Add("Wörter zugefügt", MatToastType.Success, null, null);
 
     }
 
