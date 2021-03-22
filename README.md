@@ -36,10 +36,12 @@ Die folgenden Aktionen können derzeit durchgeführt werden:<br />
 2. Erstellen der Datenbank
    * Tools->NugetPackageManager
    * Command: Update-Database
-3. Applikation Starten mit ILS Express
-4. In der Applikation 2 Neue User registrieren (Je einer für Rolle Admin und Rolle Member)
-5.  Das Login ist noch nicht komplett fertiggestellt daher müssen die Rollen der User von Hand definiert werden.
-    * Userid von den 2 von **Ihnen** erstellten user kopieren. (In der dbo.AspNetUsers Tabelle)
+3. Wenn nötig fehlende NugetPackages installieren.
+4. Applikation Starten mit ILS Express
+5. In der Applikation einen User registrieren.
+6.  Das Login ist noch nicht komplett fertiggestellt daher müssen die Rollen der User von Hand definiert werden. </br>
+    Dafür wird die dbo.ASpNetUserClaims Tabelle folgendermassen angepasst:
+    * Userid von dem von **Ihnen** erstellten user kopieren. (In der dbo.AspNetUsers Tabelle)
     * ClaimType von der unteren Tabelle entnehmen
     * ClaimValue von der unteren Tabelle entnehmen.
 <table>
@@ -56,18 +58,13 @@ Die folgenden Aktionen können derzeit durchgeführt werden:<br />
       <td>http://schemas.microsoft.com/ws/2008/06/identity/claims/role</td>
       <td>Admin</td>
     </tr>
-    <tr>
-      <td>cbfc5db4-7190-48e7-8aa3-9ccfc980912b</td>
-      <td>http://schemas.microsoft.com/ws/2008/06/identity/claims/role</td>
-      <td>Member</td>
-    </tr>
   </tbody>
 </table>
 
-6. In der Applikation Movie erstellen (als Admin eingeloggt)
-7. In der Applikation Wörter erstellen (als Admin eingeloggt)
-8. In der Applikation Wörter einem Film zufügen. (als Admin eingeloggt)
-9. Mit dem Lernen beginnen.
+7. In der Applikation Movie erstellen (als Admin eingeloggt)
+8. In der Applikation Wörter erstellen (als Admin eingeloggt)
+9. In der Applikation Wörter einem Film zufügen. (als Admin eingeloggt)
+10. Mit dem Lernen beginnen. (Movie Suchen -> Schwierigkeitsgrad wählen -> Lernen)
 
 
 
