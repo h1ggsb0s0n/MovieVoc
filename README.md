@@ -7,7 +7,7 @@ Die folgenden Aktionen können derzeit durchgeführt werden:<br />
 ## User Interaktionen:<br />
 * Benutzer kann einen Film suchen
 * Benutzer kann einen Film auswählen.
-* Benutzer kann das Vokabular eines Filmes anzeigen. (Momentan funktioniert die Funktion nur mit dem Default Value Schwierigkeit Alle)
+* Benutzer kann das Vokabular eines Filmes anzeigen. (Momentan funktioniert die Funktion nur mit dem Default Value Schwierigkeit "Alle Wörter")
 * Benutzer kann die Übersetzung eines Wortes anzeigen.
 * Wörter als bekannt markieren.
 * Wörter als unbekannt markieren.
