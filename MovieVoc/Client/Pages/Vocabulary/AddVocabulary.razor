@@ -10,8 +10,8 @@
 <h3>Wörter einem Film zufügen hinzufügen:</h3>
 
 @if (SelectedMovie == null)
-{
-    <h2>Bitte Suchen sie einen Film aus:</h2>
+{   
+    <h4>Bitte Suchen sie einen Film aus:</h4>
     <SearchMoviesTypeahead getMovie="getSelectedMovie"></SearchMoviesTypeahead>
 }
 else
@@ -28,7 +28,8 @@ else
         </MatCardContent>
         <MatCardActions>
             <div>
-                <label>Wort suchen:</label>
+                <h4>Wort suchen:</h4>
+                <label>Bitte Suchen Sie ein Wort in der Datenbank suchen:</label>
                 <SearchWordTypeahead getWord="addWordToSelectedWords"></SearchWordTypeahead>
                 <WordSelector SelectedWords="SeletedWords"></WordSelector>
             </div>

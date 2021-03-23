@@ -36,6 +36,7 @@ namespace MovieVoc.Server.Controllers
                 mapper.Map(word, newWord);
                 //todo: check if word already exists
                 db.Add(newWord);
+                numberOfWordsAdded++;
             }
 
             await db.SaveChangesAsync();
