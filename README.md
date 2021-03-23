@@ -41,11 +41,11 @@ Filme Suchen und Wörter Suchen funktionieren mit Typeahed. Nach 3 Buchstaben wi
    * Tools->NugetPackageManager
    * Command: Update-Database
 3. Wenn nötig fehlende NugetPackages installieren.
-4. Applikation Starten mit ILS Express
+4. Applikation starten mit ILS Express (MovieVoc.Server -> ILS Express)
 5. In der Applikation einen User registrieren.
-6.  Das Login ist noch nicht komplett fertiggestellt daher müssen die Rollen der User von Hand definiert werden. </br>
+6.  Das Login wurde noch nicht fertiggestellt. Daher müssen die Rolle Admin für den User von Hand definiert werden. </br>
     Dafür wird die dbo.ASpNetUserClaims Tabelle folgendermassen angepasst:
-    * Userid von dem von **Ihnen** erstellten user kopieren. (In der dbo.AspNetUsers Tabelle)
+    * Userid von dem von **Ihnen** erstellten User kopieren. (In der dbo.AspNetUsers Tabelle)
     * ClaimType von der unteren Tabelle entnehmen
     * ClaimValue von der unteren Tabelle entnehmen.
 <table>
