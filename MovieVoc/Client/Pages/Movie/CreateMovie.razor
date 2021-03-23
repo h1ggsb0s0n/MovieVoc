@@ -1,6 +1,7 @@
 ﻿@page "/movie/create"
 @inject NavigationManager navigationManager
 @inject MovieRepository movieRepository
+@inject IMatToaster Toaster
 @using System;
 @using System.IO;
 
@@ -50,7 +51,20 @@
 
     private async Task saveMovie()
     {
-            var movieId = await movieRepository.CreateMovie(Movie);
+        var response = await movieRepository.CreateMovie(Movie);
+
+        if (response.Success)
+        {
+            Toaster.Add($"Der Film wurde erfolgreich zugefügt", MatToastType.Success, null, null);
+            //reset
+            this.Movie = new MovieDTO();
+        }
+        else
+        {
+            string errormsg = await response.GetBody();
+            Toaster.Add($"Error: {errormsg}", MatToastType.Danger, null, null);
+        }
+
     }
 
     /// <summary>

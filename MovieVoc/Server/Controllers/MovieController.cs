@@ -37,8 +37,17 @@ namespace MovieVoc.Server.Controllers
             
             Movie movieForDB = new Movie();
             movieForDB = mapper.Map(movieDto, movieForDB);
-            int movieId = await movieStorage.addMovie(movieForDB);
-            return Ok(movieId);
+            try
+            {
+                int movieId = await movieStorage.addMovie(movieForDB);
+                return Ok(movieId);
+            }
+            catch(Exception e)
+            {
+                return BadRequest("Sie können keine Filme zufügen welche schon zugefügt worden sind");
+            }
+            
+            
 
         }
 

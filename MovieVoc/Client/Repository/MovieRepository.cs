@@ -18,15 +18,16 @@ namespace MovieVoc.Client.Repository
             this.httpService = httpService;
         }
 
-        public async Task<int> CreateMovie(MovieDTO movie)
+        public async Task<HttpResponseWrapper<int>> CreateMovie(MovieDTO movie)
         {
             var response = await httpService.Post<MovieDTO, int>(url, movie);
+            /*
             if (!response.Success)
             {
                 throw new ApplicationException(await response.GetBody());
-            }
+            }*/
 
-            return response.Response;
+            return response;
         }
 
 
