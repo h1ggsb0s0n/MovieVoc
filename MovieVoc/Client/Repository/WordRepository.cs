@@ -19,15 +19,16 @@ namespace MovieVoc.Client.Repository
             this.httpService = httpService;
         }
 
-        public async Task<int> AddWords(List<WordDTO> words)
+        public async Task<HttpResponseWrapper<int>> AddWords(List<WordDTO> words)
         {
             var response = await httpService.Post<List<WordDTO>, int>(url, words);
+            /*
             if (!response.Success)
             {
                 throw new ApplicationException(await response.GetBody());
-            }
+            }*/
 
-            return response.Response;
+            return response;
         }
 
         public async Task<List<WordDTO>> GetWordSuggestions(string wordName)

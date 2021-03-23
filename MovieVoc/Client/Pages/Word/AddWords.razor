@@ -42,24 +42,67 @@
 
     private void addWordsToList()
     {
-        WordDTO newWord = new WordDTO();
-        newWord.EnglischWord = this.Word.EnglischWord;
-        newWord.Translation = this.Word.Translation;
-        newWord.DifficultyLevel = this.Word.DifficultyLevel;
+        if (validiereWort())
+        {
+            WordDTO newWord = new WordDTO();
+            newWord.EnglischWord = this.Word.EnglischWord;
+            newWord.Translation = this.Word.Translation;
+            newWord.DifficultyLevel = this.Word.DifficultyLevel;
 
-        words.Add(newWord);
+            words.Add(newWord);
 
-        //Reset Form Field
-        this.Word = new WordDTO();
-        StateHasChanged();
+            //Reset Form Field
+            this.Word = new WordDTO();
+            StateHasChanged();
+        }
+        else
+        {
+            Toaster.Add("Bitte füllen Sie alle Felder aus", MatToastType.Info, null, null);
+        }
+
 
     }
 
     private async Task addWordsToDatabase()
     {
-        int numberOfWordsAdded = await wordRepository.AddWords(words);
-        //Toaster.Add("X Wörter wurden der Datenabnk zugefügt", MatToastType.Success, "2");
-        Toaster.Add("Wörter zugefügt", MatToastType.Success, null, null);
+        var response = await wordRepository.AddWords(words);
+
+        if (response.Success)
+        {
+            Toaster.Add($"{response.Response} Wörter wurden der Datenbank zugefügt", MatToastType.Success, null, null);
+        }
+        else
+        {
+            string errormsg = await response.GetBody();
+            Toaster.Add($"Error: {errormsg}", MatToastType.Danger, null, null);
+        }
+
+    }
+
+
+    /// <summary>
+    /// Todo: Die Validation über das Form funktiniert nicht. 
+    /// Daher wird hier manuel validiert.
+    /// </summary>
+    /// <returns></returns>
+    private bool validiereWort()
+    {
+        if (String.IsNullOrEmpty(Word.EnglischWord))
+        {
+            return false;
+        }
+
+        if (String.IsNullOrEmpty(Word.Translation))
+        {
+            return false;
+        }
+
+        if (Word.DifficultyLevel < 1 || Word.DifficultyLevel > 3)
+        {
+            return false;
+        }
+
+        return true;
 
     }
 

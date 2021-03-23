@@ -68,9 +68,10 @@ namespace MovieVoc.Server.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
+                return BadRequest("Sie können keine Wörter zufügen welche schon zugefügt worden sind");
             }
 
-            return numberOfWordsAdded;
+            return Ok(numberOfWordsAdded);
 
         }
 
@@ -146,8 +147,6 @@ namespace MovieVoc.Server.Controllers
             }
 
             return reval;
-
-
 
         }
 

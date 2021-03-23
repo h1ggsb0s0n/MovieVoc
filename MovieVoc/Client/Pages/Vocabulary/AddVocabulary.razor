@@ -1,32 +1,43 @@
 ﻿@page "/vocabulary/add"
 @inject MovieRepository movieRepository
 @inject VocabularyRepository vocRepository
- 
+@inject IMatToaster Toaster
+@using MovieVoc.Client.Helpers;
+
 @using MovieVoc.Client.Pages.Word
 @using MovieVoc.Client.Pages.Movie
 
 <h3>Wörter einem Film zufügen hinzufügen:</h3>
-<div>
-    <label>Film suchen:</label>
-    <SearchMoviesTypeahead getMovie="getSelectedMovie"></SearchMoviesTypeahead>
 
-    @if (SelectedMovie != null)
-    {
-        <h3>@SelectedMovie.Title</h3>
-        <p>@SelectedMovie.Summary</p>
-    }
-</div>
-<div>
-    <label>Wort suchen:</label>
-    <SearchWordTypeahead getWord="addWordToSelectedWords"></SearchWordTypeahead>
-    <WordSelector SelectedWords="SeletedWords"></WordSelector>
-</div>
-
-@if (SelectedMovie != null && SeletedWords.Any())
+@if (SelectedMovie == null)
 {
-    <button class="btn btn-primary" @onclick="addWordsToMovie">Alle Selektierten Wörter der Datenbank zufügen</button>
+    <h2>Bitte Suchen sie einen Film aus:</h2>
+    <SearchMoviesTypeahead getMovie="getSelectedMovie"></SearchMoviesTypeahead>
 }
+else
+{
 
+    <MatCard class="movie-mat-card">
+        <MatCardContent>
+            <img src="data:image/jpeg;base64, @SelectedMovie.Poster" style="width: 300px;" />
+            <div class="movie-mat-card-content">
+                <MatHeadline6 class="movie-mat-card-clean-margin">
+                    @SelectedMovie.Title
+                </MatHeadline6>
+            </div>
+        </MatCardContent>
+        <MatCardActions>
+            <div>
+                <label>Wort suchen:</label>
+                <SearchWordTypeahead getWord="addWordToSelectedWords"></SearchWordTypeahead>
+                <WordSelector SelectedWords="SeletedWords"></WordSelector>
+            </div>
+        </MatCardActions>
+    </MatCard>
+
+    <button class="btn btn-primary" @onclick="addWordsToMovie">Alle Selektierten Wörter der Datenbank zufügen</button>
+
+}
 
 
 
@@ -57,10 +68,38 @@
 
     private async void addWordsToMovie()
     {
-        VocabularyDTO vocDTO = new VocabularyDTO();
-        vocDTO.MovieId = SelectedMovie.Id;
-        vocDTO.ListOfWords = SeletedWords;
-        await vocRepository.AddVocabularyToMovie(vocDTO);
+        //Todo: Validierung zugefügt, da validierung oben nciht funktioniert.
+        if (this.SeletedWords.Any() && SelectedMovie != null)
+        {
+            VocabularyDTO vocDTO = new VocabularyDTO();
+            vocDTO.MovieId = SelectedMovie.Id;
+            vocDTO.ListOfWords = SeletedWords;
+            HttpResponseWrapper<int> response = await vocRepository.AddVocabularyToMovie(vocDTO);
+            clearAllFields();
+            if (response.Success)
+            {
+
+                Toaster.Add($"Wörter {response.Response} wurdem dem Film zugefügt", MatToastType.Success, null, null);
+            }
+            else
+            {
+                string errormsg = await response.GetBody();
+                Toaster.Add($"Error: {errormsg}", MatToastType.Danger, null, null);
+            }
+
+            StateHasChanged();
+        }
+        else
+        {
+            Toaster.Add("Bitte fügen sie der liste auf der Linken Seite wörter zu", MatToastType.Info, null, null);
+        }
+    }
+
+
+    private void clearAllFields()
+    {
+        this.SelectedMovie = null;
+        this.SeletedWords.Clear();
     }
 
 

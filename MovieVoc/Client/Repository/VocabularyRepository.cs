@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace MovieVoc.Client.Repository
 {
     public class VocabularyRepository
@@ -19,15 +20,17 @@ namespace MovieVoc.Client.Repository
             this.httpService = httpService;
         }
 
-        public async Task<int> AddVocabularyToMovie(VocabularyDTO voc)
+        public async Task<HttpResponseWrapper<int>> AddVocabularyToMovie(VocabularyDTO voc)
         {
             var response = await httpService.Post<VocabularyDTO, int>(url, voc);
+            /*
             if (!response.Success)
             {
-                throw new ApplicationException(await response.GetBody());
-            }
 
-            return response.Response;
+                throw new ApplicationException(await response.GetBody());
+            }*/
+
+            return response;
         }
 
         public async Task<List<WordDTO>> GetWordSuggestions(string name)
