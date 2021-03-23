@@ -15,7 +15,7 @@ namespace MovieVoc.Shared.Entities
         public string EnglischWord { get; set; }
         public string Translation { get; set; }
         public int DifficultyLevel { get; set; }
-        public List<MoviesWords> MoviesWords { get; set; } = new List<MoviesWords>();
+        public List<Movie> MoviesWords { get; set; } = new List<Movie>();
 
     }
 }

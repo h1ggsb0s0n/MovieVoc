@@ -31,7 +31,6 @@ namespace MovieVoc.Server.Controllers
         /// <param name="movieDto"></param>
         /// <returns></returns>
         [HttpPost]
-        [AllowAnonymous]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<int>> AddMovie(MovieDTO movieDto)
         {

@@ -26,6 +26,7 @@ namespace MovieVoc.Server.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<int>> AddWordsToDB(List<WordDTO> words)
         {
             int numberOfWordsAdded = 0;
@@ -44,6 +45,7 @@ namespace MovieVoc.Server.Controllers
 
 
         [HttpGet("search/{searchText}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<WordDTO>>> SearchWordInDB(string searchText)
         {
             List<WordDTO> reval = new List<WordDTO>();

@@ -26,7 +26,8 @@ namespace MovieVoc.Server.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<int>> Post(VocabularyDTO voc)
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<int>> AddVocabulary(VocabularyDTO voc)
         {
             //Movie movie = db.Movies.First(mv => mv.Id == voc.MovieId);
             Movie movie = db.Movies.Include(p => p.MoviesWords).Single(mv => mv.Id == voc.MovieId);
@@ -42,8 +43,8 @@ namespace MovieVoc.Server.Controllers
                 };
                 try
                 {
-                    movie.MoviesWords.Add(moviesWords);
-                    movie.MoviesWords.Add(moviesWords);
+                    //movie.MoviesWords.Add(moviesWords);
+                    //movie.MoviesWords.Add(moviesWords);
 
                 }
                 catch (Exception e)
@@ -71,6 +72,7 @@ namespace MovieVoc.Server.Controllers
         }
 
         [HttpGet("search/{searchText}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<WordDTO>>> SearchWordInDB(string searchText)
         {
             List<WordDTO> reval = new List<WordDTO>();

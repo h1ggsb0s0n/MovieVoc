@@ -42,8 +42,8 @@
                         </MatCardActionButtons>
                         <MatButton OnClick="@toggleTranslation">Übersetzung anzeigen</MatButton>
                         <MatCardActionIcons>
-                            <MatIconButton Icon="@MatIconNames.Check" OnClick="@wordKnown"></MatIconButton>
-                            <MatIconButton Icon="@MatIconNames.Cancel" OnClick="@wordUnknown"></MatIconButton>
+                            <MatIconButton Icon="@MatIconNames.Check" OnClick="@wordKnown" Style="color: #c0ffd6"></MatIconButton>
+                            <MatIconButton Icon="@MatIconNames.Cancel" OnClick="@wordUnknown" Style="color: #f37cb5"></MatIconButton>
                         </MatCardActionIcons>
                     </MatCardActions>
                 </MatCard>
@@ -55,9 +55,9 @@
                     {
                         @foreach (VocWord voc in vocabulary)
                         {
-                    <MatListItem Style="@(voc.correct ? "background-color: green" : "background-color: red")">
-                        @voc.EnglischWord
-                    </MatListItem>
+                            <MatListItem Style="@(voc.correct ? "background-color: #c0ffd6" : "background-color: #f37cb5")">
+                                @voc.EnglischWord
+                            </MatListItem>
                         }
                     }
 
@@ -68,12 +68,17 @@
 }
 else
 {
+    <MatProgressCircle Indeterminate="true" Size="MatProgressCircleSize.Large" />
     <p>Lade Vokabular...</p>
 }
 
+@if (vocabulary != null && !vocabulary.Any())
+{
+    <p>Zu diesem Film gibts leider keine Wörter</p>
+}
 
 
-<MatButton @onclick="nextCard">Nächstes Wort</MatButton>
+    <MatButton @onclick="nextCard">Nächstes Wort</MatButton>
 
 
 @code {
@@ -92,19 +97,17 @@ else
         if (DifficultyLevel == 0)
         {
             this.vocabulary = await vocRepository.getVocFromMovie(MovieId);
-            Console.WriteLine("geladen!");
 
         }
         else
         {
-            List<VocWord> vocabulary = await vocRepository.getVocFromMovie(MovieId, DifficultyLevel);
-            StateHasChanged();
+            this.vocabulary = await vocRepository.getVocFromMovie(MovieId, DifficultyLevel);
         }
 
         if (vocabulary.Any())
         {
             this.currentVocWord = vocabulary.First();
-            StateHasChanged();
+            this.currentIndex = 0;
 
         }
 
@@ -112,7 +115,8 @@ else
 
     private void nextCard()
     {
-        VocWord nextVocWord = vocabulary.ElementAtOrDefault(currentIndex++);
+        this.currentIndex++;
+        VocWord nextVocWord = vocabulary.ElementAtOrDefault(currentIndex);
         if (nextVocWord != null)
         {
             this.currentVocWord = nextVocWord;
@@ -123,8 +127,6 @@ else
         {
             this.currentVocWord = vocabulary.ElementAtOrDefault(0);
             this.currentIndex = 0;
-
-
         }
     }
 
