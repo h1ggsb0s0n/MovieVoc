@@ -8,6 +8,7 @@ using MovieVoc.Shared.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using MovieVoc.Server.Repository;
 
 namespace MovieVoc.Server.Controllers
 {
@@ -17,11 +18,13 @@ namespace MovieVoc.Server.Controllers
     {
         private readonly ApplicationDbContext db;
         private readonly IMapper mapper;
+        private readonly IMovieStorage movieStorage;
 
-        public VocabularyController(ApplicationDbContext db, IMapper mapper)
+        public VocabularyController(ApplicationDbContext db, IMapper mapper, IMovieStorage movieStorage)
         {
             this.db = db;
             this.mapper = mapper;
+            this.movieStorage = movieStorage;
         }
 
 
@@ -31,7 +34,7 @@ namespace MovieVoc.Server.Controllers
         {
             //Movie movie = db.Movies.First(mv => mv.Id == voc.MovieId);
             Movie movie = db.Movies.Include(p => p.MoviesWords).Single(mv => mv.Id == voc.MovieId);
-            int numberOfWordsAdded = 0; 
+            int numberOfWordsAdded = 0;
             foreach (WordDTO wordDTO in voc.ListOfWords)
             {
                 Word word = db.Words.Single(w => w.Id == wordDTO.Id);
@@ -43,7 +46,7 @@ namespace MovieVoc.Server.Controllers
                 };
                 try
                 {
-                    //movie.MoviesWords.Add(moviesWords);
+                    movie.MoviesWords.Add(moviesWords);
                     //movie.MoviesWords.Add(moviesWords);
 
                 }
@@ -51,7 +54,7 @@ namespace MovieVoc.Server.Controllers
                 {
                     Console.WriteLine(e);
                 }
-              
+
                 numberOfWordsAdded++;
 
             }
@@ -59,14 +62,14 @@ namespace MovieVoc.Server.Controllers
             try
             {
                 await db.SaveChangesAsync();
-                
+
 
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
-            
+
             return numberOfWordsAdded;
 
         }
@@ -93,18 +96,28 @@ namespace MovieVoc.Server.Controllers
             return reval;
         }
 
+
+        /// <summary>
+        /// Todo: Diese Funktion ist nicht gut geschrieben.
+        /// Eine neue Migration der Datenbank ist nötig um diese Methode sauber zu machen.
+        /// </summary>
+        /// <param name="movieId"></param>
+        /// <returns></returns>
         [HttpGet("learn/test/{movieId}")]
         public async Task<ActionResult<List<VocWord>>> GetVocabulary(int movieId)
         {
             List<VocWord> reval = new List<VocWord>();
             if (movieId > 0)
             {
-                List<Word> dbResult = await db.Words.ToListAsync();
 
-                foreach (Word word in dbResult)
+                Movie movie = await db.Movies.Where(m => m.Id == movieId)
+                .Include(m => m.MoviesWords).ThenInclude(mw => mw.Word)
+                .FirstOrDefaultAsync();
+
+                foreach (MoviesWords mw in movie.MoviesWords)
                 {
                     VocWord vocWord = new VocWord();
-                    reval.Add(mapper.Map(word, vocWord));
+                    reval.Add(mapper.Map(mw.Word, vocWord));
                 }
             }
 
@@ -119,19 +132,24 @@ namespace MovieVoc.Server.Controllers
             List<VocWord> reval = new List<VocWord>();
             if (movieId > 0)
             {
-                List<Word> dbResult = await db.Words.Where(w => w.DifficultyLevel == difficultylevel).ToListAsync();
 
-                foreach (Word word in dbResult)
+                Movie movie = await db.Movies.Where(m => m.Id == movieId)
+                .Include(m => m.MoviesWords).ThenInclude(mw => mw.Word)
+                .Where(m => m.MoviesWords.Any(mw => mw.Word.DifficultyLevel == difficultylevel))
+                .FirstOrDefaultAsync();
+
+                foreach (MoviesWords mw in movie.MoviesWords)
                 {
                     VocWord vocWord = new VocWord();
-                    reval.Add(mapper.Map(word, vocWord));
+                    reval.Add(mapper.Map(mw.Word, vocWord));
                 }
             }
 
             return reval;
+
+
+
         }
-
-
 
     }
 }
