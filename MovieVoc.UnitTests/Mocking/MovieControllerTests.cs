@@ -20,6 +20,7 @@ namespace MovieVoc.UnitTests.Mocking
     {
         IMapper mapper;
         Mock<IMovieStorage> storage;
+ 
 
         [SetUp]
         public void SetUp()
@@ -31,6 +32,7 @@ namespace MovieVoc.UnitTests.Mocking
 
             mapper = config.CreateMapper();
             storage = new Mock<IMovieStorage>();
+
         }
 
 
@@ -61,7 +63,9 @@ namespace MovieVoc.UnitTests.Mocking
         }
 
 
-
+        /// <summary>
+        /// Tested dass die ein Film der Datenbank zugefügt wird
+        /// <returns></returns>
         [Test]
         public async Task AddMovie_WhenCalled_AddMovieToDb()
         {
@@ -82,47 +86,13 @@ namespace MovieVoc.UnitTests.Mocking
             storage.Verify(s => s.addMovie(It.IsAny<Movie>()));
         }
 
-        /*
-        public async Task addMovie_WhenCalled_TestAuthorization()
-        {
-            var controller = new MovieController(mapper, storage.Object);
 
-            var mock = new Mock<ControllerContext>();
-            
-            mock.SetupGet(x => x.HttpContext.Request.authenticated).Returns(true);
-            controller.ControllerContext = mock.Object;
-            
-
-        }*/
-
-
-
+        /// <summary>
+        /// TEsted dass die Methode wenn kein Film gefunden wird ein 404 zurückgegeben wird
+        /// </summary>
+        /// <returns></returns>
         [Test]
         public async Task getMovie_WhenCalled_ReturnNotFound()
-        {
-            Mock<IMovieStorage> movieStorage = new Mock<IMovieStorage>();
-            movieStorage.Setup(s => s.getMovie(1)).ReturnsAsync((Movie)null);
-            var controller = new MovieController(mapper, movieStorage.Object);
-
-            var result = await controller.GetMovieInDb(1);
-            Assert.That(result.Result, Is.InstanceOf<NotFoundResult>());
-        }
-
-
-        /*
-        [Test]
-        public async Task getMovie_WhenCalled_ReturnMovie()
-        {
-            /
-            Mock<IMovieStorage> movieStorage = new Mock<IMovieStorage>();
-            movieStorage.Setup(s => s.getMovie(1)).ReturnsAsync((Movie)null);
-            var controller = new MovieController(mapper, storage.Object);
-
-            await controller.GetMovieInDb(1);
-        }*/
-
-        [Test]
-        public async Task getMovie_WhenCalled_ReturnSomething()
         {
             Mock<IMovieStorage> movieStorage = new Mock<IMovieStorage>();
             movieStorage.Setup(s => s.getMovie(1)).ReturnsAsync((Movie)null);
@@ -136,6 +106,54 @@ namespace MovieVoc.UnitTests.Mocking
             Assert.That(result.Result, Is.InstanceOf<NotFoundResult>());
         }
 
-    }
+
+
+
+        //Test das 5 Resultate zurückgegeben werden obwohl mehr Resultate in der Datenbank
+        [Test]
+        public async Task SearchMovieInDB_Value_ReturnListOfFiveResults()
+        {
+            Mock<IMovieStorage> movieStorage = new Mock<IMovieStorage>();
+            movieStorage.Setup(s => s.searchMovie("egal was")).ReturnsAsync(this.returnListOfMovies(20));
+            var controller = new MovieController(mapper, movieStorage.Object);
+            var resultFiveElements = await controller.SearchMovieInDB("egal was");
+
+            Assert.That(resultFiveElements.Value.Count, Is.EqualTo(5));
+        }
+
+
+
+        //NegativTest -> Leerer String zugefügt.
+        [Test]
+        public async Task SearchMovieInDB_EmptyString_ReturnEmpty()
+        {
+            Mock<IMovieStorage> movieStorage = new Mock<IMovieStorage>();
+            movieStorage.Setup(s => s.searchMovie("egal was")).ReturnsAsync(this.returnListOfMovies(20));
+            var controller = new MovieController(mapper, movieStorage.Object);
+            ActionResult<List<MovieDTO>> result = await controller.SearchMovieInDB("");
+            Assert.That(result.Result, Is.InstanceOf<BadRequestResult>());
+        }
+
+
+
+        //Helpers
+
+        private List<Movie> returnListOfMovies(int numberOfElements)
+        {
+
+            List<Movie> list = new List<Movie>();
+            int i = 0;
+            while(i <= numberOfElements)
+            {
+                list.Add(new Movie());
+                i++;
+            }
+
+            return list;
+        }
+
+
 
     }
+
+}

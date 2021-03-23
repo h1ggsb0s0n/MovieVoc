@@ -24,7 +24,6 @@ namespace MovieVoc.Server
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<MoviesWords>().HasKey(x => new { x.MovieId, x.WordId });
-
             base.OnModelCreating(modelBuilder);
         }
 

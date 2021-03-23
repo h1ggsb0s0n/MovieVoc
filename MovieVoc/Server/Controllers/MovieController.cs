@@ -14,7 +14,7 @@ namespace MovieVoc.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class MovieController: ControllerBase
+    public class MovieController : ControllerBase
     {
         private readonly IMapper mapper;
         private readonly IMovieStorage movieStorage;
@@ -34,7 +34,7 @@ namespace MovieVoc.Server.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<int>> AddMovie(MovieDTO movieDto)
         {
-            
+
             Movie movieForDB = new Movie();
             movieForDB = mapper.Map(movieDto, movieForDB);
             try
@@ -42,12 +42,12 @@ namespace MovieVoc.Server.Controllers
                 int movieId = await movieStorage.addMovie(movieForDB);
                 return Ok(movieId);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return BadRequest("Sie können keine Filme zufügen welche schon zugefügt worden sind");
             }
-            
-            
+
+
 
         }
 
@@ -76,16 +76,17 @@ namespace MovieVoc.Server.Controllers
         public async Task<ActionResult<List<MovieDTO>>> SearchMovieInDB(string searchText)
         {
             List<MovieDTO> reval = new List<MovieDTO>();
-            if (!string.IsNullOrWhiteSpace(searchText))
+            if (string.IsNullOrWhiteSpace(searchText))
             {
+                return BadRequest();
+            }
 
-                List<Movie> dbResult = await movieStorage.searchMovie(searchText);
+            List<Movie> dbResult = await movieStorage.searchMovie(searchText);
 
-                foreach (Movie movie in dbResult)
-                {
-                    MovieDTO movieDTO = new MovieDTO();
-                    reval.Add(mapper.Map(movie, movieDTO));
-                }
+            foreach (Movie movie in dbResult.Take(5))
+            {
+                MovieDTO movieDTO = new MovieDTO();
+                reval.Add(mapper.Map(movie, movieDTO));
             }
 
             return reval;

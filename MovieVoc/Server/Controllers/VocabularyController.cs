@@ -47,7 +47,6 @@ namespace MovieVoc.Server.Controllers
                 try
                 {
                     movie.MoviesWords.Add(moviesWords);
-                    //movie.MoviesWords.Add(moviesWords);
 
                 }
                 catch (Exception e)

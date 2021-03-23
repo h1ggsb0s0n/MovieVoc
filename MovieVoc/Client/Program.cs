@@ -42,7 +42,7 @@ namespace MovieVoc.Client
                 config.NewestOnTop = true;
                 config.ShowCloseButton = true;
                 config.MaximumOpacity = 95;
-                config.VisibleStateDuration = 3000;
+                config.VisibleStateDuration = 6000;
             });
             await builder.Build().RunAsync();
             
