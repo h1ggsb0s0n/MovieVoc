@@ -4,7 +4,7 @@ Die folgenden Aktionen können derzeit durchgeführt werden:
 Movie Voc ist eine Applikation welche es ermöglicht  Vokabular von Filmen zu lernen. <br />
 Die folgenden Aktionen können derzeit durchgeführt werden:<br />
 
-##User Interaktionen:<br />
+## User Interaktionen:<br />
 * Benutzer kann einen Film suchen
 * Benutzer kann einen Film auswählen.
 * Benutzer kann das Vokabular eines Filmes anzeigen. (Momentan funktioniert die Funktion nur mit dem Default Value Schwierigkeit Alle)
@@ -17,14 +17,14 @@ Die folgenden Aktionen können derzeit durchgeführt werden:<br />
 
 Filme Suchen und Wörter Suchen funktionieren mit Typeahed. Nach 3 Buchstaben wird die Datenbank abfrage gestartet und Vorschläge werden gezeigt.
 
-##LoginSysteme:
+## LoginSysteme:
 
 * Registrierung
 * Claims (Admin und Member)
 
 
 
-##Verwendete Technologien:
+## Verwendete Technologien:
 * C#
 * Blazor (Webassembly)
 * MatBlazor
