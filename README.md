@@ -71,15 +71,15 @@ Filme Suchen und Wörter Suchen funktionieren mit Typeahed. Nach 3 Buchstaben wi
 10. Mit dem Lernen beginnen. (Movie Suchen -> Schwierigkeitsgrad Alle Wörter -> Lernen)
 
 
-#Überlegungen zur Software
+# Überlegungen zur Software
 
 Die Idee zur Software stammt aus dem Modul SoftwareArchitektur. Die Software soll eine solide Basis zu einem ausbaubaren Projekt bieten. Als langfristige Ausbaustufe ist eine Mobilapplikation sowie die Implementierung einer Microservice Architektur geplant. Bei dieser Projektarbeit wollte ich mir hauptsächlich zusätzliches Wissen im Bereich IdentityServer, Entity Framework, Nunit testing mit Moq und Blazor aneignen.
 
-#Bei mehr Zeit
+# Bei mehr Zeit
 
 Ursprünglich war mehr Testing geplant. Das Ziel war es auch E2E Testing mit Cypress zu integrieren. Leider hat der Grundaufbau zu lange gedauert. Auch im Bereich Datenbank wollte ich mehr machen. Beispielsweise fehlen wichtige Constraints im Backend. Auch die Rückgabetypen in den Controllern sind nicht immer vom gleichen Typ. Dies sollte vereinlicht werden. Es bestehen noch einige Buggs im Frontend. Schade war dass ich 2 zusätzliche Tutorials a je ca. 5h (UnitTesting und EntityFramework) durchgearbeitet habe. Ich konnte aufgrunde Zeitmangels nur wenig davon in die Applikation übertragen.
 
-#Das würde ich anders machen
+# Das würde ich anders machen
 
 Beim Testing mit Moq ist teilweise eine andere Architektur nötig. Für den MovieController wurde eine weitere Abstraktionsebene (Datenbank) mit Interface ergänzt. Dadurch kann gemockt werden. Dies war mir vorher nicht bekannt. Der Umbau braucht einiges an Zeit. Dies würde ich beim nächsten Proejekt beachten. Am Anfang habe ich mit Normalen HTML Inputs gearbeitet. Ca. in der Mitte des Projektes habe ich auf MatBlazor umgestellt. Dies hat enorm viel Zeit ersparrt. Beim nächsten Projekt würde ich sofort mit MatBlazor starten.
 
