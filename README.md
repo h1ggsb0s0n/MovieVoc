@@ -15,7 +15,7 @@ Die folgenden Aktionen können derzeit durchgeführt werden:<br />
 * Anmelden
 * Abmelden
 
-Filme Suchen und Wörter Suchen funktionieren mit Typeahed. Nach 3 Buchstaben wird die Datenbank abfrage gestartet und Vorschläge werden gezeigt.
+Filme Suchen und Wörter Suchen funktionieren mit Typeahed. Nach 3 Buchstaben wird die Datenbank Abfrage gestartet und Vorschläge werden gezeigt.
 
 ## LoginSysteme:
 
